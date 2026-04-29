@@ -150,9 +150,9 @@ Emma's lower scores reflect annotator biographical knowledge bias: coders who kn
 If you use this tool in published research, please cite:
 
 ```
-Kee, R. (2026). llm_dream_coder: Semi-automated Hall/Van de Castle dream content
+Kee, R. & Huskey, R. (2026). llm_dream_coder: Semi-automated Hall/Van de Castle dream content
 coding using large language models. GitHub.
-https://github.com/raachaelkee/llm_dream_coder
+https://github.com/cogcommscience-lab//llm_dream_coder
 ```
 
 ---
@@ -161,4 +161,4 @@ https://github.com/raachaelkee/llm_dream_coder
 
 MIT License. See [LICENSE](LICENSE) for details.
 
-Contact: raachaelkee@gmail.com
+Contact: rlkee@ucdavis.edu
