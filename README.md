@@ -5,6 +5,9 @@ Semi-automated Hall/Van de Castle dream content coding using large language mode
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Model: Claude Opus](https://img.shields.io/badge/model-claude--opus--4--6-orange.svg)](https://www.anthropic.com/)
+[![Documentation](https://img.shields.io/badge/docs-online-brightgreen.svg)](https://cogcommscience-lab.github.io/llm_dream_coder/)
+
+**[Full Documentation](https://cogcommscience-lab.github.io/llm_dream_coder/)**
 
 ---
 
@@ -150,7 +153,7 @@ Emma's lower scores reflect annotator biographical knowledge bias: coders who kn
 If you use this tool in published research, please cite:
 
 ```
-Kee, R. (2026). llm_dream_coder: Semi-automated Hall/Van de Castle dream content
+Kee, R. & Huskey, R. (2026). llm_dream_coder: Semi-automated Hall/Van de Castle dream content
 coding using large language models. GitHub.
 https://github.com/cogcommscience-lab/llm_dream_coder
 ```
@@ -161,4 +164,4 @@ https://github.com/cogcommscience-lab/llm_dream_coder
 
 MIT License. See [LICENSE](LICENSE) for details.
 
-Contact: raachaelkee@gmail.com
+Contact: rlkee@ucdavis.edu
