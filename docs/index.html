@@ -1,1 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>llm_dream_coder — Documentation</title>
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    body {
+      font-family: "Georgia", "Times New Roman", serif;
+      font-size: 16px;
+      line-height: 1.7;
+      color: #222;
+      background: #fafafa;
+    }
+
+    a { color: #2563a8; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout ──────────────────────────────────────────────── */
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ─────────────────────────────────────────────── */
+    .sidebar {
+      width: 260px;
+      flex-shrink: 0;
+      background: #1a2340;
+      color: #cdd5e0;
+      padding: 2rem 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-brand {
+      padding: 0 1.5rem 1.5rem;
+      border-bottom: 1px solid #2d3d5c;
+      margin-bottom: 1rem;
+    }
+
+    .sidebar-brand h1 {
+      font-size: 1.1rem;
+      font-family: "Courier New", monospace;
+      color: #ffffff;
+      font-weight: bold;
+      letter-spacing: 0.02em;
+    }
+
+    .sidebar-brand p {
+      font-size: 0.78rem;
+      color: #8a9ab8;
+      margin-top: 0.25rem;
+      font-family: sans-serif;
+    }
+
+    .sidebar nav ul {
+      list-style: none;
+    }
+
+    .sidebar nav > ul > li {
+      margin-bottom: 0.1rem;
+    }
+
+    .sidebar nav a {
+      display: block;
+      padding: 0.4rem 1.5rem;
+      color: #b0bdd0;
+      font-size: 0.875rem;
+      font-family: sans-serif;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .sidebar nav a:hover {
+      background: #2d3d5c;
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    .sidebar nav .section-label {
+      display: block;
+      padding: 0.9rem 1.5rem 0.3rem;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #5a6d8a;
+      font-family: sans-serif;
+      font-weight: bold;
+    }
+
+    .sidebar nav .sub a {
+      padding-left: 2.5rem;
+      font-size: 0.82rem;
+    }
+
+    /* ── Main content ─────────────────────────────────────────── */
+    .main {
+      flex: 1;
+      padding: 3rem 4rem 5rem 3.5rem;
+      max-width: 860px;
+    }
+
+    /* ── Section headings ─────────────────────────────────────── */
+    .main h2 {
+      font-size: 1.65rem;
+      font-weight: bold;
+      color: #1a2340;
+      margin-top: 3.5rem;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid #dde4ef;
+    }
+
+    .main h2:first-of-type { margin-top: 0; }
+
+    .main h3 {
+      font-size: 1.15rem;
+      font-weight: bold;
+      color: #2a3a5a;
+      margin-top: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .main h4 {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #3a4a6a;
+      margin-top: 1.5rem;
+      margin-bottom: 0.3rem;
+      font-family: sans-serif;
+    }
+
+    .main p {
+      margin-bottom: 1rem;
+    }
+
+    .main ul, .main ol {
+      margin: 0.5rem 0 1rem 1.5rem;
+    }
+
+    .main li {
+      margin-bottom: 0.35rem;
+    }
+
+    /* ── Code ─────────────────────────────────────────────────── */
+    code {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.88em;
+      background: #eef1f8;
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+      color: #1a2340;
+    }
+
+    pre {
+      background: #1e2a42;
+      color: #c8d6f0;
+      padding: 1.25rem 1.5rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 1rem 0 1.5rem;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.875rem;
+      line-height: 1.55;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+      font-size: inherit;
+    }
+
+    /* ── Tables ───────────────────────────────────────────────── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.5rem;
+      font-family: sans-serif;
+      font-size: 0.88rem;
+    }
+
+    th {
+      background: #1a2340;
+      color: #ffffff;
+      padding: 0.55rem 0.85rem;
+      text-align: left;
+      font-weight: bold;
+    }
+
+    td {
+      padding: 0.5rem 0.85rem;
+      border-bottom: 1px solid #dde4ef;
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td { background: #f2f5fb; }
+
+    /* ── Callout boxes ────────────────────────────────────────── */
+    .callout {
+      border-left: 4px solid #2563a8;
+      background: #eef4ff;
+      padding: 0.85rem 1.2rem;
+      margin: 1.25rem 0;
+      border-radius: 0 4px 4px 0;
+      font-family: sans-serif;
+      font-size: 0.92rem;
+    }
+
+    .callout.warning {
+      border-left-color: #c27a00;
+      background: #fff8e6;
+    }
+
+    .callout.note {
+      border-left-color: #2a7a4a;
+      background: #edfaf2;
+    }
+
+    .callout strong { display: block; margin-bottom: 0.25rem; }
+
+    /* ── Badge row ────────────────────────────────────────────── */
+    .badges { margin-bottom: 1.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .badge {
+      display: inline-block;
+      font-family: sans-serif;
+      font-size: 0.75rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 3px;
+      background: #2563a8;
+      color: #fff;
+      font-weight: bold;
+    }
+    .badge.green { background: #2a7a4a; }
+    .badge.gray  { background: #6b7280; }
+    .badge.orange { background: #c27a00; }
+
+    /* ── Status chips ─────────────────────────────────────────── */
+    .status-done   { color: #2a7a4a; font-weight: bold; }
+    .status-wip    { color: #c27a00; font-weight: bold; }
+    .status-plan   { color: #888; }
+
+    /* ── Page anchor offset (sticky header compensation) ─────── */
+    h2, h3 { scroll-margin-top: 1.5rem; }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      margin-top: 5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #dde4ef;
+      font-family: sans-serif;
+      font-size: 0.82rem;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ── SIDEBAR ──────────────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <h1>llm_dream_coder</h1>
+      <p>Hall/Van de Castle coding<br>with large language models</p>
+    </div>
+    <nav>
+      <ul>
+        <span class="section-label">Getting Started</span>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#background">Background</a></li>
+        <li><a href="#installation">Installation</a></li>
+        <li><a href="#data-format">Data Format</a></li>
+
+        <span class="section-label">Modules</span>
+        <li><a href="#characters">Characters</a></li>
+        <ul class="sub">
+          <li><a href="#char-usage">Usage</a></li>
+          <li><a href="#char-codes">Code Format</a></li>
+          <li><a href="#char-series">Series Mode</a></li>
+          <li><a href="#char-evaluation">Evaluation</a></li>
+        </ul>
+        <li><a href="#coming-soon">Coming Soon</a></li>
+
+        <span class="section-label">Reference</span>
+        <li><a href="#limitations">Known Limitations</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#citation">Citation</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- ── MAIN CONTENT ──────────────────────────────────────────── -->
+  <main class="main">
+
+    <div class="badges">
+      <span class="badge">Python 3.9+</span>
+      <span class="badge green">Characters: F1 0.70</span>
+      <span class="badge orange">Model: claude-opus-4-6</span>
+      <span class="badge gray">License: MIT</span>
+    </div>
+
+    <!-- ── OVERVIEW ─────────────────────────────────────────── -->
+    <h2 id="overview">Overview</h2>
+
+    <p>
+      <code>llm_dream_coder</code> is a modular, open-source toolkit for semi-automated
+      content analysis of dream reports using the
+      <strong>Hall/Van de Castle (H/VdC)</strong> coding system. It uses
+      <a href="https://www.anthropic.com/">Claude</a> (Anthropic) as the coding engine,
+      with detailed codebook prompts and few-shot examples derived directly from the
+      H/VdC rulebook.
+    </p>
+
+    <p>
+      Each H/VdC coding category is implemented as an independent Python script. The
+      tool is designed for <strong>researcher-in-the-loop</strong> use: the LLM produces
+      candidate codes and reasoning for each dream, which researchers then review and
+      correct. It is not intended as a fully automated black-box pipeline.
+    </p>
+
+    <p>
+      The tool is <strong>generalizable</strong>: it works on any dream report dataset
+      without per-series configuration, hardcoded dictionaries, or fine-tuning.
+      All coding logic derives from the published H/VdC rulebook.
+    </p>
+
+    <!-- ── BACKGROUND ───────────────────────────────────────── -->
+    <h2 id="background">Background</h2>
+
+    <h3>The Hall/Van de Castle System</h3>
+
+    <p>
+      Developed by Calvin Hall and Robert Van de Castle in the 1960s, the H/VdC system
+      is the most widely used framework for quantitative dream content analysis.
+      It provides standardized codes for:
+    </p>
+
+    <ul>
+      <li><strong>Characters</strong> — who appears in the dream (number, gender, identity, age)</li>
+      <li><strong>Social Interactions</strong> — how characters relate to each other (aggression, friendliness, sexuality)</li>
+      <li><strong>Activities</strong> — what characters do</li>
+      <li><strong>Striving</strong> — success and failure in goal pursuit</li>
+      <li><strong>Emotions</strong> — emotional tone and affect</li>
+      <li><strong>Misfortunes &amp; Good Fortunes</strong> — negative and positive events</li>
+      <li><strong>Settings</strong> — where the dream takes place</li>
+    </ul>
+
+    <p>
+      Standard normative data and coding manuals are available through the
+      <a href="https://dreams.ucsc.edu/">Dreambank</a> project (UC Santa Cruz).
+      This toolkit uses Dreambank dream reports and human codings as ground truth
+      for development and evaluation.
+    </p>
+
+    <h3>Why LLM-based coding?</h3>
+
+    <p>
+      Manual H/VdC coding is reliable when performed by trained raters but is
+      time-consuming and requires substantial expertise. Prior automated approaches
+      have relied on keyword matching or supervised classifiers that require large
+      labeled training sets and are difficult to maintain as codebook rules evolve.
+    </p>
+
+    <p>
+      Large language models offer an alternative: given a detailed natural-language
+      codebook and examples, they can apply complex, multi-step classification rules
+      without training data. This makes the approach practical for researchers who
+      need to code large archives but lack the resources for full manual annotation.
+    </p>
+
+    <!-- ── INSTALLATION ──────────────────────────────────────── -->
+    <h2 id="installation">Installation</h2>
+
+    <pre><code>git clone https://github.com/raachaelkee/llm_dream_coder.git
+cd llm_dream_coder
+
+pip install anthropic pandas</code></pre>
+
+    <p>Set your Anthropic API key as an environment variable:</p>
+
+    <pre><code># Add to ~/.zshrc or ~/.bashrc for persistence
+export ANTHROPIC_API_KEY=your_key_here</code></pre>
+
+    <div class="callout warning">
+      <strong>API Key Security</strong>
+      Never commit your API key to version control. Use environment variables or a
+      secrets manager. The key should never appear in source code or be pasted into
+      chat interfaces.
+    </div>
+
+    <p>
+      An Anthropic API key with access to <code>claude-opus-4-6</code> is required.
+      Keys can be created at
+      <a href="https://console.anthropic.com/">console.anthropic.com</a>.
+    </p>
+
+    <!-- ── DATA FORMAT ───────────────────────────────────────── -->
+    <h2 id="data-format">Data Format</h2>
+
+    <p>
+      The tool expects two CSV files. If you have a Dreambank XML export, run
+      <code>xml_to_csv.py</code> to generate them:
+    </p>
+
+    <pre><code>python xml_to_csv.py</code></pre>
+
+    <h3>coded_dreams.csv</h3>
+    <p>One row per dream. Required columns:</p>
+    <table>
+      <tr><th>Column</th><th>Description</th></tr>
+      <tr><td><code>dream_id</code></td><td>Unique identifier, e.g. <code>emma_1960-001</code></td></tr>
+      <tr><td><code>collection_id</code></td><td>Collection name, e.g. <code>emma</code>, <code>norms-f</code></td></tr>
+      <tr><td><code>dream_report</code></td><td>Full text of the dream report</td></tr>
+      <tr><td><code>collection_sex</code></td><td>Dreamer sex (M/F)</td></tr>
+      <tr><td><code>collection_type</code></td><td><code>series</code> or <code>set</code></td></tr>
+    </table>
+
+    <h3>dreambank_codings.csv</h3>
+    <p>
+      One row per individual coding. Required only for evaluation against ground truth.
+      Generated by <code>xml_to_csv.py</code>.
+    </p>
+    <table>
+      <tr><th>Column</th><th>Description</th></tr>
+      <tr><td><code>dream_id</code></td><td>Matches <code>coded_dreams.csv</code></td></tr>
+      <tr><td><code>coding_type</code></td><td>Category, e.g. <code>char</code>, <code>fri</code>, <code>agg</code></td></tr>
+      <tr><td><code>code</code></td><td>The H/VdC code, e.g. <code>1MKA</code></td></tr>
+    </table>
+
+    <div class="callout note">
+      <strong>Using your own data</strong>
+      Ground-truth codings are optional. If you only have dream reports (no existing
+      codes), the tool will still generate predicted codes and reasoning — it simply
+      will not compute F1 or other evaluation metrics.
+    </div>
+
+    <!-- ── CHARACTERS MODULE ─────────────────────────────────── -->
+    <h2 id="characters">Characters Module</h2>
+
+    <p>
+      The Characters module identifies and codes all characters appearing in a dream
+      report using the H/VdC character classification system. It is the first module
+      implemented and serves as the foundation for Social Interaction coding (which
+      references character codes).
+    </p>
+
+    <h3 id="char-usage">Usage</h3>
+
+    <pre><code># Default: 50 dreams from b-baseline collection
+python characters.py
+
+# Custom sample size
+python characters.py --n 20
+
+# Specific collection
+python characters.py --collection norms-f
+
+# Single dream by ID
+python characters.py --dream-id b-baseline_0003
+
+# Series mode (see below)
+python characters.py --collection emma --series-mode
+
+# Full dataset
+python characters.py --all</code></pre>
+
+    <p>Output is printed to the terminal and saved to <code>characters_results.csv</code>:</p>
+
+    <pre><code>Processing 50 dream(s) with model claude-opus-4-6...
+
+  ✓  b-baseline_0003  pred=['1MKA', '1IKA', '1MKA', '2ISC', '1MKA']
+                      gt=['1MKA', '1IKA', '1MKA', '2ISC', '1MKA']  F1=1.00
+  ✗  b-baseline_0068  pred=['2IUA', '1IUA', '1FOA', '1MOA']
+                      gt=['2IUA', '2JUA', '1IUA', '1FSA', '1MOA']  F1=0.67
+
+────────────────────────────────────────────────────────────────
+Results saved → characters_results.csv
+Dreams evaluated : 50
+Exact match      : 19/50  (38.0%)
+Mean F1          : 0.728
+Mean Precision   : 0.743
+Mean Recall      : 0.724
+Non-family F1    : 0.743  (excl. H/W/D/B/T/M/F/X/A/Y/C/I/R)</code></pre>
+
+    <h3 id="char-codes">Character Code Format</h3>
+
+    <p>Each character receives a four-slot code: <strong>NUMBER + GENDER + IDENTITY + AGE</strong></p>
+
+    <table>
+      <tr><th>Slot</th><th>Values</th><th>Meaning</th></tr>
+      <tr>
+        <td>Number</td>
+        <td><code>1</code> <code>2</code> <code>3</code> <code>4</code> <code>5</code> <code>6</code> <code>7</code> <code>8</code></td>
+        <td>Individual / Group / Dead individual / Dead group / Imaginary individual / Imaginary group / Metamorphosis before / Metamorphosis after</td>
+      </tr>
+      <tr>
+        <td>Gender</td>
+        <td><code>M</code> <code>F</code> <code>I</code> <code>J</code></td>
+        <td>Male / Female / Indeterminate / Joint (mixed-gender group)</td>
+      </tr>
+      <tr>
+        <td>Identity</td>
+        <td><code>K</code> <code>S</code> <code>U</code> <code>O</code> <code>P</code> <code>E</code> and family codes</td>
+        <td>Known / Stranger / Uncertain / Occupational / Prominent / Ethnic; family codes: H W D C B T M F X A Y I R</td>
+      </tr>
+      <tr>
+        <td>Age</td>
+        <td><code>A</code> <code>T</code> <code>C</code> <code>B</code></td>
+        <td>Adult / Teenager / Child / Baby</td>
+      </tr>
+    </table>
+
+    <p>
+      Animals use <code>1ANI</code> / <code>2ANI</code>; unidentifiable creatures use <code>1CZZ</code> / <code>2CZZ</code>.
+    </p>
+
+    <h4>Example codes</h4>
+    <table>
+      <tr><th>Code</th><th>Meaning</th></tr>
+      <tr><td><code>1MKA</code></td><td>Individual male known adult</td></tr>
+      <tr><td><code>2JUA</code></td><td>Group of joint gender, uncertain relationship, adults</td></tr>
+      <tr><td><code>1FMA</code></td><td>Individual female, mother (family code M), adult</td></tr>
+      <tr><td><code>3MRA</code></td><td>Dead individual male other-relative adult (e.g., ex-husband)</td></tr>
+      <tr><td><code>5MPA</code></td><td>Imaginary/supernatural individual male prominent (e.g., the devil)</td></tr>
+      <tr><td><code>1ANI</code></td><td>Single individual animal</td></tr>
+    </table>
+
+    <h3 id="char-series">Series Mode</h3>
+
+    <p>
+      When processing a dream series (multiple dreams from the same dreamer),
+      <code>--series-mode</code> maintains a <strong>character registry</strong>
+      across dreams. The registry is populated only from relationships
+      <em>explicitly stated</em> in the dream text — for example, "my husband Frank"
+      or "my daughter Wendy." It is never inferred or assumed.
+    </p>
+
+    <p>
+      As each dream is processed, the model may return <code>registry_updates</code>
+      — new name-to-code mappings extracted from that dream's text. These are merged
+      into the registry before the next dream is processed. The registry is printed
+      at the end of a series run for inspection.
+    </p>
+
+    <pre><code>python characters.py --collection emma --series-mode</code></pre>
+
+    <div class="callout">
+      <strong>When to use series mode</strong>
+      Use <code>--series-mode</code> when: (1) your data is a dream series from a
+      single dreamer, and (2) you want the classifier to carry forward character
+      identities explicitly established in earlier dreams. It has no effect on
+      normative collections (one dream per person) and is disabled by default.
+    </div>
+
+    <h3 id="char-evaluation">Evaluation</h3>
+
+    <p>
+      The module reports two F1 scores:
+    </p>
+
+    <ul>
+      <li>
+        <strong>Overall F1</strong> — computed across all character codes, including
+        family/relative codes.
+      </li>
+      <li>
+        <strong>Non-family F1</strong> — excludes family/relative identity codes
+        (H, W, D, C, B, T, M, F, X, A, Y, I, R). These codes require biographical
+        knowledge of the dreamer that is not present in individual dream texts.
+        This is the <strong>primary metric</strong> for evaluating the generalizable tool.
+      </li>
+    </ul>
+
+    <table>
+      <tr><th>Collection</th><th>Type</th><th>n</th><th>Overall F1</th><th>Non-family F1</th></tr>
+      <tr>
+        <td>b-baseline</td>
+        <td>Series (development)</td>
+        <td>50</td>
+        <td>0.73</td>
+        <td>0.74</td>
+      </tr>
+      <tr>
+        <td>norms-f</td>
+        <td>Normative (held-out)</td>
+        <td>50</td>
+        <td>0.68</td>
+        <td class="status-done">0.70</td>
+      </tr>
+      <tr>
+        <td>emma</td>
+        <td>Series (held-out)</td>
+        <td>50</td>
+        <td>0.51</td>
+        <td>0.54</td>
+      </tr>
+    </table>
+
+    <p>
+      Emma's lower scores reflect <em>annotator biographical knowledge bias</em>:
+      Dreambank coders working on the emma series had personal knowledge of the
+      dreamer and applied family codes from dream 1, even when the dream text alone
+      does not support them. A generalizable single-dream classifier cannot recover
+      this information. Normative collections — where each dream comes from a
+      different anonymous individual — are the most appropriate benchmark for a
+      generalizable tool.
+    </p>
+
+    <!-- ── COMING SOON ────────────────────────────────────────── -->
+    <h2 id="coming-soon">Coming Soon</h2>
+
+    <table>
+      <tr><th>Module</th><th>Status</th><th>Description</th></tr>
+      <tr>
+        <td>Social Interactions</td>
+        <td><span class="status-wip">In progress</span></td>
+        <td>Aggression, friendliness, sexuality between characters</td>
+      </tr>
+      <tr>
+        <td>Activities</td>
+        <td><span class="status-plan">Planned</span></td>
+        <td>Physical, verbal, visual, expressive, and cognitive acts</td>
+      </tr>
+      <tr>
+        <td>Striving</td>
+        <td><span class="status-plan">Planned</span></td>
+        <td>Success and failure in goal-directed behavior</td>
+      </tr>
+      <tr>
+        <td>Emotions</td>
+        <td><span class="status-plan">Planned</span></td>
+        <td>Apprehension, anger, happiness, sadness, confusion</td>
+      </tr>
+      <tr>
+        <td>Misfortunes &amp; Good Fortunes</td>
+        <td><span class="status-plan">Planned</span></td>
+        <td>Negative and positive events that befall characters</td>
+      </tr>
+      <tr>
+        <td>Settings</td>
+        <td><span class="status-plan">Planned</span></td>
+        <td>Indoor, outdoor, familiar, unfamiliar, geographic</td>
+      </tr>
+    </table>
+
+    <!-- ── KNOWN LIMITATIONS ──────────────────────────────────── -->
+    <h2 id="limitations">Known Limitations</h2>
+
+    <h3>Family and relative codes</h3>
+    <p>
+      Family/relative identity codes (H, W, D, C, B, T, M, F, X, A, Y, I, R) require
+      biographical knowledge of the dreamer that is not present in single dream texts.
+      Annotators working on dream series often had this information from external sources;
+      a text-only classifier cannot recover it. For this reason, non-family F1 is
+      reported as the primary evaluation metric.
+    </p>
+    <p>
+      <code>--series-mode</code> partially addresses this by building a registry from
+      <em>explicitly stated</em> relationships in the text (e.g., "my husband Frank"),
+      but cannot recover codes that annotators assigned based on biographical knowledge
+      never mentioned in any dream report.
+    </p>
+
+    <h3>Annotator biographical knowledge bias</h3>
+    <p>
+      Dream series coded by researchers who personally knew the dreamer will show lower
+      F1 on identity codes regardless of classifier quality. This is a property of the
+      ground-truth data, not the classifier. Normative collections (one dream per
+      anonymous individual) are not affected.
+    </p>
+
+    <h3>API cost</h3>
+    <p>
+      <code>claude-opus-4-6</code> is used for accuracy. Expect approximately
+      $0.02–0.05 per dream at current API pricing. Prompt caching
+      (<code>cache_control: ephemeral</code>) is applied to the system prompt,
+      substantially reducing cost for large batches where the codebook is sent once
+      and reused.
+    </p>
+
+    <h3>JSON parse errors</h3>
+    <p>
+      Very long dream reports occasionally produce malformed JSON output.
+      The parser attempts two recovery strategies (code-fence extraction, then
+      brace-matching), but failures are possible. Failed dreams are logged, skipped,
+      and appear in the results CSV with <code>None</code> values for all metrics.
+    </p>
+
+    <!-- ── FAQ ───────────────────────────────────────────────── -->
+    <h2 id="faq">FAQ</h2>
+
+    <h3>Can I use this with dream data that has no ground-truth codings?</h3>
+    <p>
+      Yes. If <code>dreambank_codings.csv</code> does not contain entries for your
+      dreams, the tool skips evaluation and outputs predicted codes and reasoning only.
+      The <code>f1</code>, <code>precision</code>, and <code>recall</code> columns in
+      the results CSV will be empty.
+    </p>
+
+    <h3>Which Anthropic model does this use and can I change it?</h3>
+    <p>
+      The default model is <code>claude-opus-4-6</code>, chosen for its strong
+      instruction-following on multi-step classification tasks. You can change the
+      <code>MODEL</code> constant at the top of each script to use a different model.
+      Note that smaller or less capable models will produce lower F1 scores.
+    </p>
+
+    <h3>How should I interpret the reasoning output?</h3>
+    <p>
+      Each result row in the CSV includes a <code>reasoning</code> column containing
+      the model's per-code explanations in JSON format. These are intended to support
+      human review: a researcher can inspect why the model assigned a given code and
+      correct errors before using the codes in analysis.
+    </p>
+
+    <h3>Why does my emma / personal series score lower than norms-f?</h3>
+    <p>
+      See <a href="#limitations">Known Limitations — Annotator biographical knowledge bias</a>.
+      The short answer: annotators who knew the dreamer personally applied family codes
+      (husband, daughter, etc.) from the first dream, but those relationships are often
+      never stated in the dream text. The classifier correctly applies the codebook
+      rules to the text it sees, which produces disagreement with the human codes.
+      Use non-family F1 as your primary metric for evaluating the classifier.
+    </p>
+
+    <h3>Can I contribute a new coding module?</h3>
+    <p>
+      Yes — contributions welcome. Each module is a self-contained Python script.
+      Follow the structure of <code>characters.py</code>: codebook as a module-level
+      string constant, few-shot examples as a list, <code>call_claude()</code> for
+      LLM inference, <code>evaluate()</code> for F1 computation, and a
+      <code>main()</code> with argparse flags matching the existing interface.
+    </p>
+
+    <!-- ── CITATION ──────────────────────────────────────────── -->
+    <h2 id="citation">Citation</h2>
+
+    <p>If you use this tool in published research, please cite:</p>
+
+    <pre><code>Kee, R. (2026). llm_dream_coder: Semi-automated Hall/Van de Castle dream content
+coding using large language models. GitHub.
+https://github.com/raachaelkee/llm_dream_coder</code></pre>
+
+    <p>
+      For the Hall/Van de Castle coding system itself, cite:
+    </p>
+
+    <pre><code>Hall, C. S., &amp; Van de Castle, R. L. (1966). The content analysis of dreams.
+Appleton-Century-Crofts.</code></pre>
+
+    <footer>
+      <p>
+        Built by Rachael Kee &nbsp;|&nbsp;
+        <a href="https://github.com/raachaelkee/llm_dream_coder">GitHub</a> &nbsp;|&nbsp;
+        MIT License &nbsp;|&nbsp; Contact: raachaelkee@gmail.com
+      </p>
+    </footer>
+
+  </main>
+</div>
+
+</body>
+</html>
