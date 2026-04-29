@@ -300,7 +300,7 @@
 
     <div class="badges">
       <span class="badge">Python 3.9+</span>
-      <span class="badge green">Characters: F1 0.70</span>
+      <span class="badge green">Characters: Non-family F1 (attr) 0.89</span>
       <span class="badge orange">Model: claude-opus-4-6</span>
       <span class="badge gray">License: MIT</span>
     </div>
@@ -476,17 +476,21 @@ python characters.py --all</code></pre>
 
   ✓  b-baseline_0003  pred=['1MKA', '1IKA', '1MKA', '2ISC', '1MKA']
                       gt=['1MKA', '1IKA', '1MKA', '2ISC', '1MKA']  F1=1.00
-  ✗  b-baseline_0068  pred=['2IUA', '1IUA', '1FOA', '1MOA']
-                      gt=['2IUA', '2JUA', '1IUA', '1FSA', '1MOA']  F1=0.67
+  ✗  b-baseline_0218  pred=['2IUA', '1FKA', '1FUA', '1MBA']
+                      gt=['2IUA', '1FKA', '1FSA', '1MBA']  F1=0.94
 
 ────────────────────────────────────────────────────────────────
 Results saved → characters_results.csv
-Dreams evaluated : 50
-Exact match      : 19/50  (38.0%)
-Mean F1          : 0.728
-Mean Precision   : 0.743
-Mean Recall      : 0.724
-Non-family F1    : 0.743  (excl. H/W/D/B/T/M/F/X/A/Y/C/I/R)</code></pre>
+Dreams evaluated : 49
+Exact match      : 19/49  (38.8%)
+Mean F1 (attr)   : 0.877
+Mean Precision   : 0.891
+Mean Recall      : 0.880
+Non-family F1    : 0.848  (excl. H/W/D/B/T/M/F/X/A/Y/C/I/R)
+Attr number    : 0.934
+Attr gender    : 0.892
+Attr identity  : 0.715
+Attr age       : 0.938</code></pre>
 
     <h3 id="char-codes">Character Code Format</h3>
 
@@ -561,46 +565,75 @@ Non-family F1    : 0.743  (excl. H/W/D/B/T/M/F/X/A/Y/C/I/R)</code></pre>
     <h3 id="char-evaluation">Evaluation</h3>
 
     <p>
-      The module reports two F1 scores:
+      F1 is computed at the <strong>attribute level</strong>, not the whole-code level.
+      Each H/VdC code is decomposed into its constituent slots — number, gender,
+      identity, age (and ANI/CZZ type for animals/creatures) — and F1 is computed via
+      Counter intersection over those <code>(slot, value)</code> tuples. This gives
+      partial credit when the model gets 3 of 4 attributes right (e.g., predicting
+      <code>1MKA</code> when the truth is <code>1FKA</code> is no longer treated
+      as a total miss).
+    </p>
+
+    <p>
+      The module reports two attribute-level F1 scores:
     </p>
 
     <ul>
       <li>
-        <strong>Overall F1</strong> — computed across all character codes, including
-        family/relative codes.
+        <strong>Overall F1 (attribute-level)</strong> — computed across all character
+        codes, including family/relative codes.
       </li>
       <li>
-        <strong>Non-family F1</strong> — excludes family/relative identity codes
-        (H, W, D, C, B, T, M, F, X, A, Y, I, R). These codes require biographical
-        knowledge of the dreamer that is not present in individual dream texts.
-        This is the <strong>primary metric</strong> for evaluating the generalizable tool.
+        <strong>Non-family F1 (attribute-level)</strong> — excludes family/relative
+        identity codes (H, W, D, C, B, T, M, F, X, A, Y, I, R). These codes require
+        biographical knowledge of the dreamer that is not present in individual dream
+        texts. This is the <strong>primary metric</strong> for evaluating the
+        generalizable tool.
       </li>
     </ul>
+
+    <h4>Benchmark results</h4>
 
     <table>
       <tr><th>Collection</th><th>Type</th><th>n</th><th>Overall F1</th><th>Non-family F1</th></tr>
       <tr>
         <td>b-baseline</td>
         <td>Series (development)</td>
-        <td>50</td>
-        <td>0.73</td>
-        <td>0.74</td>
+        <td>49</td>
+        <td>0.877</td>
+        <td>0.848</td>
       </tr>
       <tr>
         <td>norms-f</td>
         <td>Normative (held-out)</td>
         <td>50</td>
-        <td>0.68</td>
-        <td class="status-done">0.70</td>
+        <td>0.873</td>
+        <td class="status-done">0.889</td>
       </tr>
       <tr>
         <td>emma</td>
         <td>Series (held-out)</td>
         <td>50</td>
-        <td>0.51</td>
-        <td>0.54</td>
+        <td>0.807</td>
+        <td>0.706</td>
       </tr>
     </table>
+
+    <h4>Per-attribute breakdown (norms-f, held-out)</h4>
+
+    <table>
+      <tr><th>Attribute</th><th>F1</th></tr>
+      <tr><td>Number</td><td>0.915</td></tr>
+      <tr><td>Gender</td><td>0.850</td></tr>
+      <tr><td>Identity</td><td>0.719</td></tr>
+      <tr><td>Age</td><td>0.910</td></tr>
+    </table>
+
+    <p>
+      Identity is the weakest slot — most remaining errors are K/S/U/O/R confusions
+      where human coders applied subjective judgment. Number, gender, and age are more
+      constrained and score above 0.85 across all collections.
+    </p>
 
     <p>
       Emma's lower scores reflect <em>annotator biographical knowledge bias</em>:

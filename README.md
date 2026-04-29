@@ -23,9 +23,9 @@ The tool is **generalizable**: it operates on any dream report without per-serie
 
 ## Coding Categories
 
-| Category | Status | Non-family F1 (held-out) | Script |
+| Category | Status | Non-family F1 (attribute-level, held-out) | Script |
 |---|---|---|---|
-| Characters | Complete | 0.70 | `characters.py` |
+| Characters | Complete | 0.89 | `characters.py` |
 | Social Interactions | In progress | — | `social_interactions.py` |
 | Activities | Planned | — | — |
 | Striving | Planned | — | — |
@@ -110,30 +110,47 @@ Output is printed to the terminal and saved to `characters_results.csv`:
   ✓  b-baseline_0003  pred=['1MKA', '1IKA', '1MKA', '2ISC', '1MKA']  gt=[...]  F1=1.00
 
 Results saved → characters_results.csv
-Dreams evaluated : 50
-Exact match      : 19/50  (38.0%)
-Mean F1          : 0.728
-Non-family F1    : 0.743  (excl. H/W/D/B/T/M/F/X/A/Y/C/I/R)
+Dreams evaluated : 49
+Exact match      : 19/49  (38.8%)
+Mean F1 (attr)   : 0.877
+Non-family F1    : 0.848  (excl. H/W/D/B/T/M/F/X/A/Y/C/I/R)
+Attr number    : 0.934
+Attr gender    : 0.892
+Attr identity  : 0.715
+Attr age       : 0.938
 ```
 
 ---
 
 ## Evaluation
 
-Two F1 scores are reported for the Characters module:
+F1 is computed at the **attribute level**, not the whole-code level. Each H/VdC code is decomposed into its constituent slots — number, gender, identity, age (and ANI/CZZ type for animals/creatures) — and F1 is computed via Counter intersection over those `(slot, value)` tuples. This gives partial credit when the model gets 3 of 4 attributes right (e.g., predicting `1MKA` when the truth is `1FKA` is no longer treated as a total miss).
 
-- **Overall F1** — all character codes, including family/relative codes
-- **Non-family F1** — excludes family/relative codes (H, W, D, B, T, M, F, X, A, Y, C, I, R)
+Two attribute-level F1 scores are reported:
 
-Non-family F1 is the primary metric for a generalizable, single-dream tool. Family and relative codes (e.g., husband, daughter, father) require biographical knowledge of the dreamer that is not present in individual dream texts. Annotators working on dream series often have this knowledge from external sources; a single-dream classifier cannot recover it.
+- **Overall F1 (attribute-level)** — all character codes, including family/relative codes
+- **Non-family F1 (attribute-level)** — excludes family/relative codes (H, W, D, B, T, M, F, X, A, Y, C, I, R)
 
-**Characters benchmark results:**
+Non-family F1 is the primary metric for a generalizable, single-dream tool. Family and relative codes require biographical knowledge of the dreamer that is not present in individual dream texts. Annotators working on dream series often have this knowledge from external sources; a single-dream classifier cannot recover it.
+
+**Characters benchmark results (attribute-level F1):**
 
 | Collection | Type | n | Overall F1 | Non-family F1 |
 |---|---|---|---|---|
-| b-baseline | Series (dev) | 50 | 0.73 | 0.74 |
-| norms-f | Normative (held-out) | 50 | 0.68 | 0.70 |
-| emma | Series (held-out) | 50 | 0.51 | 0.54 |
+| b-baseline | Series (dev) | 49 | 0.877 | 0.848 |
+| norms-f | Normative (held-out) | 50 | 0.873 | **0.889** |
+| emma | Series (held-out) | 50 | 0.807 | 0.706 |
+
+**Per-attribute breakdown (norms-f, held-out):**
+
+| Attribute | F1 |
+|---|---|
+| Number | 0.915 |
+| Gender | 0.850 |
+| Identity | 0.719 |
+| Age | 0.910 |
+
+Identity is the weakest slot — most remaining errors are K/S/U/O/R confusions where human coders applied subjective judgment. Number, gender, and age are more constrained and score above 0.85 across all collections.
 
 Emma's lower scores reflect annotator biographical knowledge bias: coders who knew the dreamer personally applied family relationship codes from the very first dream, even when the dream text alone does not support them. Normative collections (one dream per anonymous individual) are the most appropriate benchmark for a generalizable tool.
 

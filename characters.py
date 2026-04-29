@@ -109,6 +109,11 @@ describing interactions, but D must not appear as a character code in your outpu
       Do NOT use J for individual characters.
       I is for SMALL groups (typically 2 people) of genuinely unknown gender.
 
+  CRITICAL: Do NOT use F or M for a group just because most members appear to
+  be one gender. A bus, party, classroom, audience, or other social gathering
+  with 3+ people is J unless every member is explicitly stated to be the same
+  gender. "Mostly women," "mainly men," "a group of women and one man" → all J.
+
   GENDER RULES:
   - Pronouns always take priority. Use he/him → M, she/her → F.
   - For names without pronouns: use M or F only when the name is
@@ -151,6 +156,19 @@ describing interactions, but D must not appear as a character code in your outpu
         ex-spouses (coded R not H/W), and anyone described as a relation
         but not in the immediate list above.
 
+  CRITICAL for R: Use R for ANY of the following relationships, even when
+  the character is named or feels personally familiar to the dreamer:
+    • ex-spouses ("my ex-husband," "Howard, who I divorced," a former
+      spouse the dreamer is no longer married to)
+    • parents-in-law, siblings-in-law ("my mother-in-law")
+    • grandparents, great-grandparents, grandchildren
+    • cousins, nieces, nephews
+    • step-relatives, half-siblings
+    • any character explicitly described as a relative but not in the
+      immediate list above (F/M/X/B/T/H/W/D/C/I/A/Y)
+  Do NOT code these as K — the family/relative relationship always takes
+  priority over personal acquaintance.
+
   STEP 2 — If not family, work through this decision tree:
 
     O = Occupational — character is identified primarily by their
@@ -159,7 +177,9 @@ describing interactions, but D must not appear as a character code in your outpu
         "a soldier," "the teacher," "a police officer," "a cashier,"
         "a shopkeeper," "a bagger," "customers in a store."
         → Use O even if the character is also a stranger.
-        → If the occupational figure is also a named acquaintance, use K.
+        → If the occupational figure is ALSO a named acquaintance the
+          dreamer personally knows, use K. ("My friend Tyler who is a
+          doctor" → K, not O.)
         IMPORTANT: "The bride" and "the groom" at a wedding are NOT O —
         they are ceremony participants (strangers = S), not professionals.
         Clergy officiating the ceremony (minister, priest) ARE O.
@@ -188,13 +208,13 @@ describing interactions, but D must not appear as a character code in your outpu
             "my fiance," "the guy I've been seeing"
           • Classmates or study-group members: "a boy in my class,"
             "the students in my lab," "a girl from school"
-          • Former employers or coworkers the dreamer personally knows:
-            "a man I had worked for," "my old boss," "a coworker"
+          • Coworkers the dreamer personally knows: "co-worker Josh,"
+            "my old boss," "a man I had worked for"
           • Anyone described as personally known: "a neighbor," "a girl
             I know," "someone from my building"
         IMPORTANT: If an occupational figure is also described as a
         personal acquaintance, use K instead of O (e.g., "a doctor I
-        know," "a man I had worked for").
+        know," "a man I had worked for," "co-worker [Name]").
         IMPORTANT: K is NOT limited to named characters — a prior
         personal relationship is sufficient.
 
@@ -212,6 +232,13 @@ describing interactions, but D must not appear as a character code in your outpu
         context, an unnamed figure in a fully ambiguous setting.
         U is a last resort — prefer K (prior relationship implied),
         S (stranger context clear), or O (occupational role clear).
+        Tiebreaker: prefer S over U when there is a clear TRANSACTIONAL or
+        PUBLIC context — a store, wedding, restaurant, bus, party, public
+        event, or someone else's home. Use U for genuinely vague mentions
+        where no setting or context tells you anything: "some people,"
+        "kids" mentioned without scene context, "a person" in an ambiguous
+        space. The presence of a setting that implies stranger relationships
+        → S; absence of any informative context → U.
 
   CRITICAL IDENTITY RULES:
   - Never use K for family members. Family always gets the specific code.
@@ -231,6 +258,14 @@ describing interactions, but D must not appear as a character code in your outpu
   2ANI = group of animals
   Apply the same number modifiers for dead/imaginary/metamorphosis animals:
     e.g., 3ANI = individual dead animal, 5ANI = individual imaginary animal
+
+  IMPORTANT: When an animal is described with ANY human role, kinship term,
+  family label, or relationship word (e.g., "my father was a gorilla,"
+  "Jay cat, a cousin of mine," "my sister dog," "the cat that's like
+  family," "Mama cat"), code it as ANI regardless of the label. The
+  character's physical form in the dream ALWAYS takes priority over any
+  human role, kinship metaphor, or relationship word applied to it. An
+  animal is never coded with a human identity slot (F/M/B/T/H/W/D/C/I/A/Y/R/K/S/U/O/E/P).
 
 ## CREATURES
   CZZ = creature that cannot be identified as either human or animal
@@ -401,6 +436,41 @@ FEW_SHOT = [
             "5MPA (the devil)": "Imaginary/supernatural individual (5), male pronoun 'He/His' (M), "
                                 "prominent supernatural figure (P), adult (A)."
         }
+    },
+    {
+        "dream": (
+            "I'm in a bus with other people, mostly women. One woman says, \"Let's go live at "
+            "the Kendell.\" I said, \"Oh, I've lived there before. I guess it would be O.K. as "
+            "long as I don't have to live on the 4th floor. People who apply late usually get "
+            "the 4th floor, but if there's an elevator, then it would be O.K.\" My friend then "
+            "goes to the center of the bus and announces that I will play a song. I'm "
+            "embarrassed. I get in front of everyone and need to readjust my instrument. I glue "
+            "some cardboard together and cut some down to size. I use cottage cheese as a glue. "
+            "I hide my work from the audience because they will have to guess the answer to the "
+            "game. Then I try to play my banjo. It doesn't sound right. Finally, I notice that "
+            "the cap is on incorrectly and the instrument is backwards and looks like a guitar. "
+            "I look reprovingly at my friend and tell her she put the 4 on backwards for the "
+            "caps. I fix it and then I can play the banjo."
+        ),
+        "codes": ["2JSA", "1FUA"],
+        "reasoning": {
+            "2JSA (other people on the bus)": (
+                "Group (2), large social gathering on a bus with 3+ people → J even though "
+                "'mostly women.' Do NOT use F just because most members appear female — the "
+                "group is J unless every member is explicitly stated to be the same gender. "
+                "No prior relationship with the dreamer implied → S (strangers). Adult (A)."
+            ),
+            "1FUA (one woman / my friend — same character)": (
+                "Individual (1), female pronoun 'her/she' (F). "
+                "SAME CHARACTER as 'one woman': the woman who speaks up on the bus ('Let's "
+                "go live at the Kendell') is the same person the dreamer later calls 'my "
+                "friend.' When two mentions could plausibly refer to the same character, "
+                "code them as one — do not split into separate codes. "
+                "Identity = U, not K: 'my friend' without a name is insufficient for K. "
+                "K requires a named individual or a clearly described prior relationship. "
+                "An unnamed friend in a dream defaults to U. Adult (A)."
+            ),
+        },
     },
 ]
 
@@ -583,6 +653,39 @@ def evaluate_nonfamily(predicted, ground_truth):
     return evaluate(pred_nf, true_nf)
 
 
+def decompose_code(code):
+    code = str(code).strip()
+    if "ANI" in code:
+        return [("num", code.replace("ANI", "")), ("type", "ANI")]
+    if "CZZ" in code:
+        return [("num", code.replace("CZZ", "")), ("type", "CZZ")]
+    if len(code) == 4:
+        return [("num", code[0]), ("gen", code[1]), ("idt", code[2]), ("age", code[3])]
+    return [("raw", code)]
+
+
+def evaluate_attribute(predicted, ground_truth):
+    pred = Counter(attr for code in predicted    for attr in decompose_code(code))
+    true = Counter(attr for code in ground_truth for attr in decompose_code(code))
+    tp = sum((pred & true).values())
+    precision = tp / sum(pred.values()) if pred else (1.0 if not true else 0.0)
+    recall    = tp / sum(true.values()) if true else (1.0 if not pred else 0.0)
+    f1 = (2 * precision * recall / (precision + recall)
+          if (precision + recall) > 0 else 0.0)
+    return {
+        "exact_match": Counter(predicted) == Counter(ground_truth),
+        "precision":   round(precision, 3),
+        "recall":      round(recall,    3),
+        "f1":          round(f1,        3),
+    }
+
+
+def evaluate_nonfamily_attribute(predicted, ground_truth):
+    pred_nf = [c for c in predicted    if not is_family_code(c)]
+    true_nf = [c for c in ground_truth if not is_family_code(c)]
+    return evaluate_attribute(pred_nf, true_nf)
+
+
 def format_registry(registry):
     """Format the character registry dict for inclusion in the user message."""
     if not registry:
@@ -665,8 +768,8 @@ def main():
                 "exact_match":           False,
                 "precision":             None,
                 "recall":                None,
-                "f1":                    None,
-                "f1_nonfamily":          None,
+                "f1_attr":               None,
+                "f1_nonfamily_attr":     None,
                 "precision_nonfamily":   None,
                 "recall_nonfamily":      None,
                 "exact_match_nonfamily": None,
@@ -676,8 +779,8 @@ def main():
             time.sleep(DELAY_SECONDS)
             continue
 
-        metrics    = evaluate(pred_codes, gt_codes)
-        nf_metrics = evaluate_nonfamily(pred_codes, gt_codes)
+        metrics    = evaluate_attribute(pred_codes, gt_codes)
+        nf_metrics = evaluate_nonfamily_attribute(pred_codes, gt_codes)
         attr_acc   = attribute_accuracy(pred_codes, gt_codes)
 
         status = "✓" if metrics["exact_match"] else "✗"
@@ -695,8 +798,8 @@ def main():
             "exact_match":           metrics["exact_match"],
             "precision":             metrics["precision"],
             "recall":                metrics["recall"],
-            "f1":                    metrics["f1"],
-            "f1_nonfamily":          nf_metrics["f1"],
+            "f1_attr":               metrics["f1"],
+            "f1_nonfamily_attr":     nf_metrics["f1"],
             "precision_nonfamily":   nf_metrics["precision"],
             "recall_nonfamily":      nf_metrics["recall"],
             "exact_match_nonfamily": nf_metrics["exact_match"],
@@ -715,7 +818,7 @@ def main():
     df_out.to_csv(OUTPUT_CSV, index=False, encoding="utf-8-sig")
 
     # ── Summary ───────────────────────────────────────────────────────────────
-    valid = df_out[df_out["f1"].notna()]
+    valid = df_out[df_out["f1_attr"].notna()]
     n = len(valid)
 
     print(f"\n{'─'*60}")
@@ -725,14 +828,14 @@ def main():
     if n > 0:
         exact = valid["exact_match"].sum()
         print(f"Exact match      : {exact}/{n}  ({exact/n:.1%})")
-        print(f"Mean F1          : {valid['f1'].mean():.3f}")
+        print(f"Mean F1 (attr)   : {valid['f1_attr'].mean():.3f}")
         print(f"Mean Precision   : {valid['precision'].mean():.3f}")
         print(f"Mean Recall      : {valid['recall'].mean():.3f}")
 
-        nf_valid = valid[valid["f1_nonfamily"].notna()]
+        nf_valid = valid[valid["f1_nonfamily_attr"].notna()]
         if len(nf_valid) > 0:
             nf_exact = nf_valid["exact_match_nonfamily"].sum()
-            print(f"Non-family F1    : {nf_valid['f1_nonfamily'].mean():.3f}  (excl. H/W/D/B/T/M/F/X/A/Y/C/I/R)")
+            print(f"Non-family F1    : {nf_valid['f1_nonfamily_attr'].mean():.3f}  (excl. H/W/D/B/T/M/F/X/A/Y/C/I/R)")
             print(f"Non-family Exact : {nf_exact}/{len(nf_valid)}  ({nf_exact/len(nf_valid):.1%})")
 
         # Per-attribute accuracy (where computable)
@@ -750,7 +853,7 @@ def main():
                 print(f"  {r['dream_id']}")
                 print(f"    Predicted   : {r['predicted']}")
                 print(f"    Ground truth: {r['ground_truth']}")
-                print(f"    F1={r['f1']:.2f}  P={r['precision']:.2f}  R={r['recall']:.2f}")
+                print(f"    F1={r['f1_attr']:.2f}  P={r['precision']:.2f}  R={r['recall']:.2f}")
                 print()
 
 
