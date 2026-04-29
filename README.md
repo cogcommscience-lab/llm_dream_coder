@@ -49,7 +49,7 @@ Prompt caching via the Anthropic API (`cache_control: ephemeral`) keeps inferenc
 ## Installation
 
 ```bash
-git clone https://github.com/raachaelkee/llm_dream_coder.git
+git clone https://github.com/cogcommscience-lab/llm_dream_coder.git
 cd llm_dream_coder
 
 pip install anthropic pandas
@@ -150,9 +150,9 @@ Emma's lower scores reflect annotator biographical knowledge bias: coders who kn
 If you use this tool in published research, please cite:
 
 ```
-Kee, R. & Huskey, R. (2026). llm_dream_coder: Semi-automated Hall/Van de Castle dream content
+Kee, R. (2026). llm_dream_coder: Semi-automated Hall/Van de Castle dream content
 coding using large language models. GitHub.
-https://github.com/cogcommscience-lab//llm_dream_coder
+https://github.com/cogcommscience-lab/llm_dream_coder
 ```
 
 ---
@@ -161,4 +161,4 @@ https://github.com/cogcommscience-lab//llm_dream_coder
 
 MIT License. See [LICENSE](LICENSE) for details.
 
-Contact: rlkee@ucdavis.edu
+Contact: raachaelkee@gmail.com
