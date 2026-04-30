@@ -23,10 +23,10 @@ The tool is **generalizable**: it operates on any dream report without per-serie
 
 ## Coding Categories
 
-| Category | Status | Non-family F1 (attribute-level, held-out) | Script |
+| Category | Status | Overall F1 (attribute-level, held-out) | Script |
 |---|---|---|---|
-| Characters | Complete | 0.89 | `characters.py` |
-| Social Interactions | In progress | — | `social_interactions.py` |
+| Characters | Complete | 0.87 (non-family 0.89) | `characters.py` |
+| Social Interactions | In progress | 0.59 (fri below 0.70 target) | `social_interactions.py` |
 | Activities | Planned | — | — |
 | Striving | Planned | — | — |
 | Emotions | Planned | — | — |
@@ -153,6 +153,33 @@ Non-family F1 is the primary metric for a generalizable, single-dream tool. Fami
 Identity is the weakest slot — most remaining errors are K/S/U/O/R confusions where human coders applied subjective judgment. Number, gender, and age are more constrained and score above 0.85 across all collections.
 
 Emma's lower scores reflect annotator biographical knowledge bias: coders who knew the dreamer personally applied family relationship codes from the very first dream, even when the dream text alone does not support them. Normative collections (one dream per anonymous individual) are the most appropriate benchmark for a generalizable tool.
+
+---
+
+## Social Interactions Module — In Progress
+
+The Social Interactions module codes all aggressive (agg), friendly (fri), and sexual (sex) interactions in a dream report. Each interaction is a four-field tuple: `(init, rec, type, code)` where `init` and `rec` are character codes (or `D` for the dreamer), `type` is one of `agg`/`fri`/`sex`, and `code` combines a sub-type number with a direction symbol (`>` one-way, `=` mutual, `R` rejected, `*` self-directed).
+
+**Usage:**
+
+```bash
+python social_interactions.py --collection norms-f --n 50
+python social_interactions.py --dream-id b-baseline_0003
+```
+
+**Current benchmark results (attribute-level F1):**
+
+| Collection | Type | n | Overall F1 | F1 agg | F1 fri | F1 sex |
+|---|---|---|---|---|---|---|
+| b-baseline | Series (dev) | 20 | 0.701 | 0.769 | 0.666 | 0.975 |
+| norms-f | Normative (held-out) | 50 | 0.587 | 0.782 | 0.665 | 0.965 |
+| emma | Series (held-out) | 50 | 0.685 | 0.774 | 0.734 | 0.896 |
+
+The module is **not yet at the 0.70 F1 target**. Aggression and sex coding are strong (0.77–0.97), but friendly interaction F1 (0.665–0.734) is below target due to subjective disagreement on what counts as an act of friendliness in human ground truth (e.g., neutral conversation, casual greetings, role-based information delivery). Norms-f overall F1 is held back by recall — short normative dreams provide less context for the model to identify subtle interactions.
+
+The same attribute-level F1 metric is used: each tuple is decomposed into its constituent slots (init/rec character attributes, type, sub-type, direction) and scored via Counter intersection. This gives partial credit when, for example, the type and sub-type are correct but the character code is mis-coded.
+
+This module remains under active development.
 
 ---
 

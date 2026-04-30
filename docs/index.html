@@ -285,6 +285,7 @@
           <li><a href="#char-series">Series Mode</a></li>
           <li><a href="#char-evaluation">Evaluation</a></li>
         </ul>
+        <li><a href="#social-interactions">Social Interactions</a></li>
         <li><a href="#coming-soon">Coming Soon</a></li>
 
         <span class="section-label">Reference</span>
@@ -645,16 +646,86 @@ Attr age       : 0.938</code></pre>
       generalizable tool.
     </p>
 
+    <!-- ── SOCIAL INTERACTIONS ──────────────────────────────────── -->
+    <h2 id="social-interactions">Social Interactions Module — In Progress</h2>
+
+    <p>
+      The Social Interactions module codes all aggressive (<code>agg</code>),
+      friendly (<code>fri</code>), and sexual (<code>sex</code>) interactions
+      in a dream report. Each interaction is a four-field tuple:
+      <code>(init, rec, type, code)</code> where <code>init</code> and
+      <code>rec</code> are character codes (or <code>D</code> for the
+      dreamer), <code>type</code> is one of agg/fri/sex, and <code>code</code>
+      combines a sub-type number with a direction symbol
+      (<code>&gt;</code> one-way, <code>=</code> mutual, <code>R</code>
+      rejected, <code>*</code> self-directed).
+    </p>
+
+    <h3>Usage</h3>
+
+    <pre><code>python social_interactions.py --collection norms-f --n 50
+python social_interactions.py --dream-id b-baseline_0003</code></pre>
+
+    <h3>Current benchmark results (attribute-level F1)</h3>
+
+    <table>
+      <tr>
+        <th>Collection</th><th>Type</th><th>n</th>
+        <th>Overall F1</th><th>F1 agg</th><th>F1 fri</th><th>F1 sex</th>
+      </tr>
+      <tr>
+        <td>b-baseline</td>
+        <td>Series (dev)</td>
+        <td>20</td>
+        <td>0.701</td>
+        <td>0.769</td>
+        <td>0.666</td>
+        <td>0.975</td>
+      </tr>
+      <tr>
+        <td>norms-f</td>
+        <td>Normative (held-out)</td>
+        <td>50</td>
+        <td>0.587</td>
+        <td>0.782</td>
+        <td>0.665</td>
+        <td>0.965</td>
+      </tr>
+      <tr>
+        <td>emma</td>
+        <td>Series (held-out)</td>
+        <td>50</td>
+        <td>0.685</td>
+        <td>0.774</td>
+        <td>0.734</td>
+        <td>0.896</td>
+      </tr>
+    </table>
+
+    <div class="callout warning">
+      <strong>Below target — under active development</strong>
+      The module has not yet reached the 0.70 F1 target. Aggression and sex
+      coding are strong (0.77–0.97), but friendly interaction F1
+      (0.665–0.734) is below target due to subjective disagreement on what
+      counts as an act of friendliness in the human ground truth (neutral
+      conversation, casual greetings, role-based information delivery).
+      Norms-f overall F1 is held back by recall — short normative dreams
+      provide less context for the model to identify subtle interactions.
+    </div>
+
+    <p>
+      The same attribute-level F1 metric is used as for Characters: each
+      tuple is decomposed into its constituent slots (init/rec character
+      attributes, type, sub-type, direction) and scored via Counter
+      intersection. This gives partial credit when, for example, the type
+      and sub-type are correct but the character code is mis-coded.
+    </p>
+
     <!-- ── COMING SOON ────────────────────────────────────────── -->
     <h2 id="coming-soon">Coming Soon</h2>
 
     <table>
       <tr><th>Module</th><th>Status</th><th>Description</th></tr>
-      <tr>
-        <td>Social Interactions</td>
-        <td><span class="status-wip">In progress</span></td>
-        <td>Aggression, friendliness, sexuality between characters</td>
-      </tr>
       <tr>
         <td>Activities</td>
         <td><span class="status-plan">Planned</span></td>

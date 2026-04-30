@@ -21,6 +21,7 @@ env/
 
 # Generated output files (re-created each run)
 characters_results.csv
+social_interactions_results.csv
 
 # Editor
 .vscode/
