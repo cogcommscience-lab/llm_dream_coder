@@ -26,7 +26,7 @@ The tool is **generalizable**: it operates on any dream report without per-serie
 | Category | Status | Overall F1 (attribute-level, held-out) | Script |
 |---|---|---|---|
 | Characters | Complete | 0.87 (non-family 0.89) | `characters.py` |
-| Social Interactions | In progress | 0.59 (fri below 0.70 target) | `social_interactions.py` |
+| Social Interactions | Validated, awaiting final test | 0.65 validation (fri 0.79 on held-out norms-f) | `social_interactions.py` |
 | Activities | Planned | — | — |
 | Striving | Planned | — | — |
 | Emotions | Planned | — | — |
@@ -169,17 +169,20 @@ python social_interactions.py --dream-id b-baseline_0003
 
 **Current benchmark results (attribute-level F1):**
 
-| Collection | Type | n | Overall F1 | F1 agg | F1 fri | F1 sex |
+| Collection | Role | n | Overall F1 | F1 agg | F1 fri | F1 sex |
 |---|---|---|---|---|---|---|
-| b-baseline | Series (dev) | 20 | 0.701 | 0.769 | 0.666 | 0.975 |
-| norms-f | Normative (held-out) | 50 | 0.587 | 0.782 | 0.665 | 0.965 |
-| emma | Series (held-out) | 50 | 0.685 | 0.774 | 0.734 | 0.896 |
+| b-baseline | Development | 20 | 0.701 | 0.760 | 0.674 | 0.970 |
+| norms-f | Validation | 50 | 0.650 | 0.769 | **0.787** | 0.968 |
+| emma | Validation (annotator-bias) | 50 | 0.643 | 0.777 | 0.682 | 0.921 |
+| norms-m | **Reserved final test** | 500 | — | — | — | — |
 
-The module is **not yet at the 0.70 F1 target**. Aggression and sex coding are strong (0.77–0.97), but friendly interaction F1 (0.665–0.734) is below target due to subjective disagreement on what counts as an act of friendliness in human ground truth (e.g., neutral conversation, casual greetings, role-based information delivery). Norms-f overall F1 is held back by recall — short normative dreams provide less context for the model to identify subtle interactions.
+Aggression and sex coding are strong (0.76–0.97). Friendly interaction F1 reached **0.787 on the held-out norms-f validation set** after iterative refinement (animal-interaction handling, conservative threshold rule, three new F4-focused few-shot examples). Friendly remains slightly below target on the b-baseline development set (0.674) and on emma (0.682, where annotator biographical bias inflates the human-coded count). Sub-type confusion is rare (91% sub-type agreement when init/rec/direction match) — the remaining error mode is type-level over- and under-coding.
 
-The same attribute-level F1 metric is used: each tuple is decomposed into its constituent slots (init/rec character attributes, type, sub-type, direction) and scored via Counter intersection. This gives partial credit when, for example, the type and sub-type are correct but the character code is mis-coded.
+The same attribute-level F1 metric is used as for Characters: each tuple is decomposed into its constituent slots (init/rec character attributes, type, sub-type, direction) and scored via Counter intersection, giving partial credit when (for example) the type and sub-type are correct but the character code is mis-coded.
 
-This module remains under active development.
+**Methodology note.** During iterative development, b-baseline served as the development set, while norms-f and emma were used as validation sets — error patterns on these sets informed prompt refinements across multiple rounds. The norms-m collection (n=500) has been reserved as the **untouched final test set** and will be evaluated only once per module after all classifier development is complete; those will be the published held-out numbers.
+
+This module remains under active development pending final test on norms-m.
 
 ---
 

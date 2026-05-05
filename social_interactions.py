@@ -493,6 +493,126 @@ FEW_SHOT = [
             ),
         },
     },
+    # ── F4 (assistance/care) shown as a multi-actor chain ────────────────
+    {
+        "dream": (
+            "I was taking care of a little boy. His mother is a good friend of our family. "
+            "They lived next door in a duplex and the lady next door was having a party for "
+            "her little girl. When the children came, I played with them, especially one "
+            "little boy. When I went in, this little boy followed me. He said he was tired, "
+            "so I put him to bed in my bed. A while later I went to look at him and he had "
+            "wet his pants. I discovered that he was wearing diapers and I wanted to change "
+            "them, but I couldn't find any clean ones. I asked Woody (the child I was taking "
+            "care of) where his old ones might be. He didn't know, so I went and asked the "
+            "lady who was giving the party. She said that she wondered where he was. I asked "
+            "who he was and how old he was. She said that he was 10 years old, but he had a "
+            "very poor home life. His mother hadn't wanted him so she never trained him or "
+            "loved him at all. She told me then that his name was Freddy."
+        ),
+        "interactions": [
+            {"init": "1FSA", "rec": "1MUA", "type": "agg", "code": "3>"},
+            {"init": "D",    "rec": "1FKA", "type": "fri", "code": "4>"},
+            {"init": "1FKA", "rec": "1FKC", "type": "fri", "code": "4>"},
+            {"init": "D",    "rec": "1MUA", "type": "fri", "code": "5>"},
+            {"init": "D",    "rec": "1MUA", "type": "fri", "code": "4>"},
+        ],
+        "reasoning": {
+            "fri D→1MUA 4>": (
+                "Dreamer takes care of the boy (Freddy) — putting him to bed when tired, "
+                "checking on him, intending to change his diapers. F4 = active provision "
+                "of CARE/HELP/PROTECTION. The dreamer's caretaking acts ARE F4."
+            ),
+            "fri D→1MUA 5>": (
+                "Dreamer plays with the boy among the other children — F5 (initiating a "
+                "shared social activity, playing together)."
+            ),
+            "fri D→1FKA 4>": (
+                "Dreamer assists the family friend by taking care of her son (the boy), "
+                "freeing the friend to host the party. F4 (assistance to the friend)."
+            ),
+            "fri 1FKA→1FKC 4>": (
+                "The party-giving lady cares for her own little girl by hosting the party — "
+                "F4 (care directed at her child)."
+            ),
+            "agg 1FSA→1MUA 3>": (
+                "The boy's biological mother (referenced as never having trained or loved "
+                "him) — A3 (rejection/coercion through emotional neglect). The mother is a "
+                "stranger to the dreamer (1FSA), the boy is 1MUA."
+            ),
+            "NOT CODED — asking where the diapers are (D→1MUA, D→1FKA)": (
+                "The dreamer ASKS Woody where the old diapers are, then ASKS the lady about "
+                "the boy. Asking for INFORMATION is NOT F4. F4 codes the actual provision "
+                "of help/care, not requests for help or information."
+            ),
+            "NOT CODED — the lady telling dreamer about Freddy's history": (
+                "The lady explains who Freddy is and his history. This is INFORMATION "
+                "DELIVERY, not a friendly social act. Role-based or factual exchanges of "
+                "information are not coded as F2 or F4."
+            ),
+        },
+    },
+    # ── Asking for help that is REFUSED — not F4, but rejection IS A3 ────
+    {
+        "dream": (
+            "I dreamed that I was running up Antisdale Avenue pursued by a large black dog "
+            "with fantastically long whiskers. No matter how fast I ran, the dog was always "
+            "right behind me, and his whiskers tickled my legs. I saw my sister standing on "
+            "the lawn of one of the houses watching me, and when I asked her to help me, she "
+            "laughed."
+        ),
+        "interactions": [
+            {"init": "1ANI", "rec": "D", "type": "agg", "code": "6>"},
+            {"init": "1FTA", "rec": "D", "type": "agg", "code": "3>"},
+        ],
+        "reasoning": {
+            "agg 1ANI→D 6>": (
+                "The dog chases the dreamer up the street — physical coercion / pursuit "
+                "with intent (A6). Animals: 1ANI."
+            ),
+            "agg 1FTA→D 3>": (
+                "The sister LAUGHS when the dreamer asks for help — this is a hostile "
+                "dismissal/rejection of the plea, coded A3 (rejection or verbal coercion). "
+                "Sister code: 1FTA (individual female sister adult — T in slot 3 = sister)."
+            ),
+            "NOT CODED — dreamer asking sister for help": (
+                "The dreamer asks her sister for help. ASKING for help is NOT F4. F4 codes "
+                "the actual PROVISION of help. Do NOT add 'fri D→1FTA 4>' just because the "
+                "dreamer requests help. The request itself is not a coded interaction."
+            ),
+            "NOT CODED — refused help as 4R": (
+                "The sister does not provide help. Do NOT code this as 'fri 1FTA→D 4R' "
+                "(rejected friendliness). H/VdC convention: code the hostile rejection as "
+                "AGGRESSION (A3) where appropriate, not as a rejected friendly act."
+            ),
+        },
+    },
+    # ── Empty-list example: role-based info delivery is NOT a social interaction ──
+    {
+        "dream": (
+            "I dreamed I was in to see a doctor (a stranger) for consultation. The "
+            "examination seemed of a trivial nature, but continued for quite some time. I "
+            "was growing more puzzled by the procedure and wondering why he was taking so "
+            "long. At last he seemed terribly pleased with himself and told me I had cancer. "
+            "At the same time indicating because of his skill and early detection of the "
+            "growth, complete cure was possible."
+        ),
+        "interactions": [],
+        "reasoning": {
+            "NOT CODED — doctor's examination, diagnosis, and prognosis": (
+                "The doctor examines the dreamer, delivers a cancer diagnosis, and explains "
+                "that cure is possible. ALL of this is ROLE-BASED INFORMATION DELIVERY by "
+                "a professional in his service capacity. None of it is a coded social "
+                "interaction. Specifically: the examination is not F4 (it is professional "
+                "service, not personal helping); the diagnosis is not F2 (factual info "
+                "delivery, not a friendly verbal act); the prognosis is not F4 either. The "
+                "dream contains NO codeable social interactions."
+            ),
+            "NOT CODED — dreamer's puzzlement": (
+                "The dreamer's internal feelings ('growing more puzzled,' 'wondering why') "
+                "are dreamer states, not interactions directed at anyone."
+            ),
+        },
+    },
 ]
 
 # ─────────────────────────────────────────────────────────────────────────────
