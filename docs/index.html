@@ -287,7 +287,7 @@
         </ul>
         <li><a href="#social-interactions">Social Interactions</a></li>
         <li><a href="#activities">Activities</a></li>
-        <li><a href="#striving">Striving</a></li>
+        <li><a href="#success-failure">Success and Failure</a></li>
         <li><a href="#coming-soon">Coming Soon</a></li>
 
         <span class="section-label">Reference</span>
@@ -348,7 +348,7 @@
       <li><strong>Characters</strong> — who appears in the dream (number, gender, identity, age)</li>
       <li><strong>Social Interactions</strong> — how characters relate to each other (aggression, friendliness, sexuality)</li>
       <li><strong>Activities</strong> — what characters do</li>
-      <li><strong>Striving</strong> — success and failure in goal pursuit</li>
+      <li><strong>Success and Failure</strong> — success and failure in goal pursuit</li>
       <li><strong>Emotions</strong> — emotional tone and affect</li>
       <li><strong>Misfortunes &amp; Good Fortunes</strong> — negative and positive events</li>
       <li><strong>Settings</strong> — where the dream takes place</li>
@@ -820,15 +820,15 @@ python activities.py --skip 50 --n 50          # validation partition (dreams 51
       when sub-type or direction is correct but the character code is mis-coded.
     </p>
 
-    <!-- ── STRIVING ─────────────────────────────────────────────── -->
-    <h2 id="striving">Striving Module — In Progress</h2>
+    <!-- ── SUCCESS AND FAILURE ──────────────────────────────────── -->
+    <h2 id="success-failure">Success and Failure Module — In Progress</h2>
 
     <p>
-      The Striving module codes goal-directed behavior outcomes: which
-      characters (including the dreamer) achieved a <strong>success</strong>
+      The Success and Failure module codes goal-directed behavior outcomes:
+      which characters (including the dreamer) achieved a <strong>success</strong>
       and which experienced a <strong>failure</strong>. Unlike Activities,
-      Striving is not sub-typed — it codes simply who succeeded and who
-      failed. Three elements must all be present for a Striving code:
+      Success and Failure is not sub-typed — it codes simply who succeeded and
+      who failed. Three elements must all be present for a code:
     </p>
 
     <ol>
@@ -838,18 +838,18 @@ python activities.py --skip 50 --n 50          # validation partition (dreams 51
     </ol>
 
     <p>
-      Striving is intentionally sparse — most dreams have 0–2 striving events.
-      Routine locomotion, emotional reactions, accidental events, and background
-      mentions of trying are not coded.
+      Success and Failure coding is intentionally sparse — most dreams have
+      0–2 such events. Routine locomotion, emotional reactions, accidental
+      events, and background mentions of trying are not coded.
     </p>
 
     <h3>Usage</h3>
 
-    <pre><code>python striving.py                           # 50 norms-f dev dreams
-python striving.py --n 20                    # specific number
-python striving.py --collection norms-f      # full collection
-python striving.py --dream-id norms-f_0003   # single dream
-python striving.py --skip 50 --n 50          # validation partition (dreams 51–100)</code></pre>
+    <pre><code>python success_failure.py                           # 50 norms-f dev dreams
+python success_failure.py --n 20                    # specific number
+python success_failure.py --collection norms-f      # full collection
+python success_failure.py --dream-id norms-f_0003   # single dream
+python success_failure.py --skip 50 --n 50          # validation partition (dreams 51–100)</code></pre>
 
     <h3>Current benchmark results (attribute-level F1)</h3>
 
@@ -880,17 +880,17 @@ python striving.py --skip 50 --n 50          # validation partition (dreams 51�
 
     <div class="callout note">
       <strong>Validation Mean F1 (0.887) exceeds the ≥ 0.70 target.</strong>
-      Succ and fail F1 are reported separately and averaged. Striving is a
-      sparse category — most dreams have no striving codings — so mean F1
-      is computed over all dreams, including those with empty ground truth
-      where an empty prediction receives F1 = 1.0.
+      Succ and fail F1 are reported separately and averaged. Success and Failure
+      is a sparse category — most dreams have no codings — so mean F1 is
+      computed over all dreams, including those with empty ground truth where
+      an empty prediction receives F1 = 1.0.
     </div>
 
     <div class="callout warning">
       <strong>Data partitioning note.</strong>
-      Striving has ground-truth codings in norms-f and norms-m (and sparsely
-      in b-baseline and emma). Development uses norms-f dreams 1–50; the
-      validation set is norms-f dreams 51–100; norms-m (n=494) is reserved
+      Success and Failure has ground-truth codings in norms-f and norms-m (and
+      sparsely in b-baseline and emma). Development uses norms-f dreams 1–50;
+      the validation set is norms-f dreams 51–100; norms-m (n=494) is reserved
       as the untouched final test set.
     </div>
 
@@ -912,19 +912,19 @@ python striving.py --skip 50 --n 50          # validation partition (dreams 51�
         <td>Physical, verbal, visual, expressive, and cognitive acts — overall F1 0.72 (validation)</td>
       </tr>
       <tr>
-        <td>Striving</td>
+        <td>Success and Failure</td>
         <td><span class="status-progress">Validated</span></td>
         <td>Success and failure in goal-directed behavior — mean F1 0.89 (validation)</td>
-      </tr>
-      <tr>
-        <td>Emotions</td>
-        <td><span class="status-plan">Planned</span></td>
-        <td>Apprehension, anger, happiness, sadness, confusion</td>
       </tr>
       <tr>
         <td>Misfortunes &amp; Good Fortunes</td>
         <td><span class="status-plan">Planned</span></td>
         <td>Negative and positive events that befall characters</td>
+      </tr>
+      <tr>
+        <td>Emotions</td>
+        <td><span class="status-plan">Planned</span></td>
+        <td>Apprehension, anger, happiness, sadness, confusion</td>
       </tr>
       <tr>
         <td>Settings</td>

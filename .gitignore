@@ -23,7 +23,7 @@ env/
 characters_results.csv
 social_interactions_results.csv
 activities_results.csv
-striving_results.csv
+success_failure_results.csv
 
 # Editor
 .vscode/

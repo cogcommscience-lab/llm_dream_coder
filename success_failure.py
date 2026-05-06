@@ -1,35 +1,36 @@
 #!/usr/bin/env python3
 """
-striving.py — Hall/Van de Castle Striving Coder
+success_failure.py — Hall/Van de Castle Success and Failure Coder
 
-Semi-automated classifier for the Striving category of the H/VdC coding system.
-Codes goal-directed behavior outcomes — which characters achieved a success and
-which experienced a failure — in dream reports using Claude, then evaluates
-against human-coded ground truth.
+Semi-automated classifier for the Success and Failure category of the H/VdC
+coding system. Codes goal-directed behavior outcomes — which characters achieved
+a success and which experienced a failure — in dream reports using Claude, then
+evaluates against human-coded ground truth.
 
 Usage:
-    python striving.py                                       # sample of 50 norms-f dreams (dev partition)
-    python striving.py --n 20                                # sample of 20 dreams
-    python striving.py --all                                 # full dataset
-    python striving.py --collection norms-f                  # one collection
-    python striving.py --dream-id norms-f_0003               # single dream
-    python striving.py --skip 50 --n 50                      # dreams 51–100 (validation partition)
+    python success_failure.py                                       # sample of 50 norms-f dreams (dev partition)
+    python success_failure.py --n 20                                # sample of 20 dreams
+    python success_failure.py --all                                 # full dataset
+    python success_failure.py --collection norms-f                  # one collection
+    python success_failure.py --dream-id norms-f_0003               # single dream
+    python success_failure.py --skip 50 --n 50                      # dreams 51–100 (validation partition)
 
 Output:
-    striving_results.csv — per-dream results with predicted and ground-truth
+    success_failure_results.csv — per-dream results with predicted and ground-truth
     character lists for successes and failures, plus F1 for each.
 
 Notes on evaluation:
-    Each striving code is a character (D, 1FKA, etc.). F1 is computed at the
-    attribute level: each character code is decomposed into (slot, value) tuples
-    — number, gender, identity, age — then scored via Counter intersection.
+    Each Success and Failure code is a character (D, 1FKA, etc.). F1 is computed
+    at the attribute level: each character code is decomposed into (slot, value)
+    tuples — number, gender, identity, age — then scored via Counter intersection.
     This gives partial credit when the model identifies the right character type
     but mis-codes one attribute (e.g., known vs. stranger).
 
 Methodology note:
-    Striving has ground-truth codings in norms-f and norms-m (and sparsely in
-    b-baseline and emma). We use norms-f dreams 1–50 as the development partition
-    for iteration. norms-m is reserved as the untouched final test set.
+    Success and Failure has ground-truth codings in norms-f and norms-m (and
+    sparsely in b-baseline and emma). We use norms-f dreams 1–50 as the
+    development partition for iteration. norms-m is reserved as the untouched
+    final test set.
 """
 
 import os
@@ -48,7 +49,7 @@ import anthropic
 MODEL             = "claude-opus-4-6"
 INPUT_CSV         = "coded_dreams.csv"
 CODINGS_CSV       = "dreambank_codings.csv"
-OUTPUT_CSV        = "striving_results.csv"
+OUTPUT_CSV        = "success_failure_results.csv"
 SAMPLE_SIZE       = 50
 SAMPLE_COLLECTION = "norms-f"
 DELAY_SECONDS     = 0.3
@@ -57,21 +58,21 @@ DELAY_SECONDS     = 0.3
 # CODEBOOK
 # ─────────────────────────────────────────────────────────────────────────────
 CODEBOOK = """
-Hall/Van de Castle (H/VdC) Striving Coding Rules
-=================================================
+Hall/Van de Castle (H/VdC) Success and Failure Coding Rules
+============================================================
 
 ## Overview
 
 Code every instance in which a character (including the dreamer) engages in
 goal-directed behavior with a definite outcome — either Success or Failure.
 
-A striving event requires THREE elements:
+A Success or Failure code requires THREE elements:
   1. A GOAL: the character wants to accomplish something specific
   2. An EFFORT: the character actively tries to achieve that goal
   3. An OUTCOME: the goal was either achieved (Success) or not (Failure)
 
 Code WHO was involved in each outcome: the dreamer (D) or other characters.
-Striving is less common than activities. Most dreams have 0–2 striving events.
+Success and Failure coding is less common than activities. Most dreams have 0–2 coded events.
 
 ## The Dreamer
 Use "D" for the dreamer.
@@ -111,7 +112,7 @@ DO NOT code failure just because something bad happened (accident, injury) or
 because a plan changed — the explicit TRY + explicit FAIL language must be present.
 
 ─────────────────────────────────────────────────────────────────────────────
-## DO NOT CODE AS STRIVING
+## DO NOT CODE AS SUCCESS OR FAILURE
 
   – Goals not stated explicitly: if the dream does not contain explicit goal
     language ("I tried to," "I was trying to," "I wanted to," "I attempted to,"
@@ -179,7 +180,7 @@ because a plan changed — the explicit TRY + explicit FAIL language must be pre
 ─────────────────────────────────────────────────────────────────────────────
 ## FREQUENCY GUIDANCE
 
-Most dreams have 0–2 striving events. If you produce more than 3–4 striving
+Most dreams have 0–2 success or failure events. If you produce more than 3–4
 codings for a single dream, re-check whether each event truly has all three
 elements: a clear GOAL + a stated EFFORT + an explicit OUTCOME.
 
@@ -450,7 +451,7 @@ def build_system_content():
         + "## Worked Examples\n"
         + ex_text
         + "\n\nRespond with ONLY valid JSON matching the output format above.\n"
-        + "If no striving events occur in the dream, return: "
+        + "If no successes or failures occur in the dream, return: "
         + '{"successes": [], "failures": [], "reasoning": {}}\n'
     )
 
@@ -474,7 +475,7 @@ def call_claude(client, dream_text, system_content):
             {
                 "role": "user",
                 "content": (
-                    "Code all striving events in this dream report:\n\n"
+                    "Code all successes and failures in this dream report:\n\n"
                     + dream_text
                 ),
             }
@@ -547,7 +548,7 @@ def evaluate_attribute(pred_chars, gt_chars):
 # MAIN
 # ─────────────────────────────────────────────────────────────────────────────
 def main():
-    parser = argparse.ArgumentParser(description="H/VdC Striving Coder")
+    parser = argparse.ArgumentParser(description="H/VdC Success and Failure Coder")
     parser.add_argument("--all",        action="store_true",
                         help="Run on the full dataset")
     parser.add_argument("--collection", type=str, default=None,
