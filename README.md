@@ -28,7 +28,7 @@ The tool is **generalizable**: it operates on any dream report without per-serie
 | Characters | Complete | 0.87 (non-family 0.89) | `characters.py` |
 | Social Interactions | Validated, awaiting final test | agg 0.77 / fri 0.79 / sex 0.97 (norms-f validation) | `social_interactions.py` |
 | Activities | Validated, awaiting final test | 0.72 validation (dev 0.77) | `activities.py` |
-| Striving | Planned | — | — |
+| Striving | Validated, awaiting final test | 0.91 dev / 0.89 validation (norms-f) | `striving.py` |
 | Emotions | Planned | — | — |
 | Misfortunes & Good Fortunes | Planned | — | — |
 | Settings | Planned | — | — |
@@ -219,6 +219,43 @@ python activities.py --skip 50 --n 50          # dreams 51-100 (validation parti
 Overall validation F1 (0.72) meets the ≥ 0.70 target. P is the weakest sub-type on validation (0.634); remaining P errors are largely attributable to character-code identity confusion (K/S/U) inherited from the Characters module rather than wrong P decisions.
 
 Attribute-level F1 is computed via Counter intersection over decomposed `(slot, value)` tuples: each tuple is split into init/rec character attributes, sub-type, and direction, giving partial credit when sub-type or direction is correct but the character code is mis-coded.
+
+This module remains under active development pending final test on norms-m.
+
+---
+
+## Striving Module — In Progress
+
+The Striving module codes goal-directed behavior outcomes: which characters (including the dreamer) achieved a success and which experienced a failure. Unlike Activities, Striving is not coded by sub-type — it codes simply who succeeded and who failed, identifying the characters involved.
+
+**Three elements required for a Striving code:**
+1. A stated **goal** the character was trying to achieve
+2. Explicit **effort** toward that goal
+3. A clear **outcome**: success or failure
+
+Striving is intentionally sparse — most dreams have 0–2 striving events. Routine locomotion, emotional reactions, and accidental events are not striving even when they involve effort.
+
+**Usage:**
+
+```bash
+python striving.py                           # sample of 50 norms-f dreams (dev partition)
+python striving.py --n 20                    # specific number of dreams
+python striving.py --collection norms-f      # full collection
+python striving.py --dream-id norms-f_0003   # single dream
+python striving.py --skip 50 --n 50          # dreams 51-100 (validation partition)
+```
+
+**Current benchmark results (attribute-level F1):**
+
+| Partition | Role | n | F1 succ | F1 fail | Mean F1 |
+|---|---|---|---|---|---|
+| norms-f 1–50 | Development | 50 | 0.900 | 0.913 | **0.907** |
+| norms-f 51–100 | Validation (held-out) | 50 | 0.880 | 0.893 | **0.887** |
+| norms-m | **Reserved final test** | 494 | — | — | — |
+
+Both F1 sub-types (succ and fail) are reported separately and averaged for Mean F1. Striving ground truth exists only in norms-f and norms-m. The dev partition is norms-f dreams 1–50; the validation set is norms-f dreams 51–100; norms-m is reserved as the untouched final test set.
+
+Attribute-level F1 is computed via Counter intersection over decomposed `(slot, value)` tuples for character codes (number, gender, identity, age), giving partial credit when the character type is correct but one attribute is mis-coded.
 
 This module remains under active development pending final test on norms-m.
 

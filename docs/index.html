@@ -287,6 +287,7 @@
         </ul>
         <li><a href="#social-interactions">Social Interactions</a></li>
         <li><a href="#activities">Activities</a></li>
+        <li><a href="#striving">Striving</a></li>
         <li><a href="#coming-soon">Coming Soon</a></li>
 
         <span class="section-label">Reference</span>
@@ -819,6 +820,87 @@ python activities.py --skip 50 --n 50          # validation partition (dreams 51
       when sub-type or direction is correct but the character code is mis-coded.
     </p>
 
+    <!-- ── STRIVING ─────────────────────────────────────────────── -->
+    <h2 id="striving">Striving Module — In Progress</h2>
+
+    <p>
+      The Striving module codes goal-directed behavior outcomes: which
+      characters (including the dreamer) achieved a <strong>success</strong>
+      and which experienced a <strong>failure</strong>. Unlike Activities,
+      Striving is not sub-typed — it codes simply who succeeded and who
+      failed. Three elements must all be present for a Striving code:
+    </p>
+
+    <ol>
+      <li>A stated <strong>goal</strong> the character was trying to achieve</li>
+      <li>Explicit <strong>effort</strong> toward that goal</li>
+      <li>A clear <strong>outcome</strong>: success (<code>succ</code>) or failure (<code>fail</code>)</li>
+    </ol>
+
+    <p>
+      Striving is intentionally sparse — most dreams have 0–2 striving events.
+      Routine locomotion, emotional reactions, accidental events, and background
+      mentions of trying are not coded.
+    </p>
+
+    <h3>Usage</h3>
+
+    <pre><code>python striving.py                           # 50 norms-f dev dreams
+python striving.py --n 20                    # specific number
+python striving.py --collection norms-f      # full collection
+python striving.py --dream-id norms-f_0003   # single dream
+python striving.py --skip 50 --n 50          # validation partition (dreams 51–100)</code></pre>
+
+    <h3>Current benchmark results (attribute-level F1)</h3>
+
+    <table>
+      <tr>
+        <th>Partition</th><th>Role</th><th>n</th>
+        <th>F1 succ</th><th>F1 fail</th><th>Mean F1</th>
+      </tr>
+      <tr>
+        <td>norms-f 1–50</td>
+        <td>Development</td>
+        <td>50</td>
+        <td>0.900</td><td>0.913</td><td>0.907</td>
+      </tr>
+      <tr>
+        <td>norms-f 51–100</td>
+        <td>Validation (held-out)</td>
+        <td>50</td>
+        <td>0.880</td><td>0.893</td><td><strong>0.887</strong></td>
+      </tr>
+      <tr>
+        <td>norms-m</td>
+        <td><strong>Reserved final test</strong></td>
+        <td>494</td>
+        <td>—</td><td>—</td><td>—</td>
+      </tr>
+    </table>
+
+    <div class="callout note">
+      <strong>Validation Mean F1 (0.887) exceeds the ≥ 0.70 target.</strong>
+      Succ and fail F1 are reported separately and averaged. Striving is a
+      sparse category — most dreams have no striving codings — so mean F1
+      is computed over all dreams, including those with empty ground truth
+      where an empty prediction receives F1 = 1.0.
+    </div>
+
+    <div class="callout warning">
+      <strong>Data partitioning note.</strong>
+      Striving has ground-truth codings in norms-f and norms-m (and sparsely
+      in b-baseline and emma). Development uses norms-f dreams 1–50; the
+      validation set is norms-f dreams 51–100; norms-m (n=494) is reserved
+      as the untouched final test set.
+    </div>
+
+    <p>
+      Attribute-level F1 is computed via Counter intersection over decomposed
+      <code>(slot, value)</code> tuples for character codes — number, gender,
+      identity, age — giving partial credit when the character type is correct
+      but one attribute is mis-coded.
+    </p>
+
     <!-- ── COMING SOON ────────────────────────────────────────── -->
     <h2 id="coming-soon">Coming Soon</h2>
 
@@ -831,8 +913,8 @@ python activities.py --skip 50 --n 50          # validation partition (dreams 51
       </tr>
       <tr>
         <td>Striving</td>
-        <td><span class="status-plan">Planned</span></td>
-        <td>Success and failure in goal-directed behavior</td>
+        <td><span class="status-progress">Validated</span></td>
+        <td>Success and failure in goal-directed behavior — mean F1 0.89 (validation)</td>
       </tr>
       <tr>
         <td>Emotions</td>
