@@ -29,7 +29,7 @@ The tool is **generalizable**: it operates on any dream report without per-serie
 | Social Interactions | Validated, awaiting final test | agg 0.77 / fri 0.79 / sex 0.97 (norms-f validation) | `social_interactions.py` |
 | Activities | Validated, awaiting final test | 0.72 validation (dev 0.77) | `activities.py` |
 | Success and Failure | Validated, awaiting final test | 0.91 dev / 0.89 validation (norms-f) | `success_failure.py` |
-| Misfortunes & Good Fortunes | Planned | — | — |
+| Misfortunes & Good Fortunes | Validated, awaiting final test | MF 0.73 / GF 1.00 (norms-f validation) | `misfortunes_good_fortunes.py` |
 | Emotions | Planned | — | — |
 | Settings | Planned | — | — |
 
@@ -256,6 +256,50 @@ python success_failure.py --skip 50 --n 50          # dreams 51-100 (validation 
 Both F1 sub-types (succ and fail) are reported separately and averaged for Mean F1. Success and Failure ground truth exists only in norms-f and norms-m. The dev partition is norms-f dreams 1–50; the validation set is norms-f dreams 51–100; norms-m is reserved as the untouched final test set.
 
 Attribute-level F1 is computed via Counter intersection over decomposed `(slot, value)` tuples for character codes (number, gender, identity, age), giving partial credit when the character type is correct but one attribute is mis-coded.
+
+This module remains under active development pending final test on norms-m.
+
+---
+
+## Misfortunes & Good Fortunes Module — In Progress
+
+The Misfortunes & Good Fortunes module codes two categories of passive events in dream reports:
+
+- **Misfortunes (MF)**: Negative events that happen TO a character from outside — not chosen by the character, but undesirable events that befall them (accidents, threats, illness, death). Coded with a sub-type 1–6.
+- **Good Fortunes (GF)**: Unexpectedly positive events that happen TO a character without deliberate goal-directed effort — windfalls, lucky rescues, unexpected gifts. No sub-type.
+
+**Six MF sub-types:**
+- **1 — Apprehension**: The character's worry, anxiety, or dread is the primary narrative element
+- **2 — Physical accident/mishap**: Unintentional physical harm not caused by another person's deliberate act
+- **3 — Adverse situation**: Being in a seriously unpleasant circumstance (social scrutiny, displacement, hostile environment)
+- **4 — Physical jeopardy**: Passive victim of acute physical danger from an external source (reckless vehicle, fire, threatening creature)
+- **5 — Physical suffering**: Actual illness, injury, pain, or deprivation (already materialized, not merely feared)
+- **6 — Death**: A character literally dies within the dream narrative
+
+**Usage:**
+
+```bash
+python misfortunes_good_fortunes.py                              # all b-baseline dreams (dev partition)
+python misfortunes_good_fortunes.py --n 50                       # first 50 b-baseline dreams
+python misfortunes_good_fortunes.py --collection norms-f         # validation partition
+python misfortunes_good_fortunes.py --collection norms-f --n 50  # first 50 norms-f dreams
+python misfortunes_good_fortunes.py --dream-id b-baseline_0062   # single dream
+python misfortunes_good_fortunes.py --all                        # full dataset
+```
+
+**Data partitioning note.** MF/GF ground-truth codings exist in b-baseline, norms-f, and norms-m. b-baseline (250 dreams, 107 with MF codings, 5 with GF codings) is the development partition. norms-f is the validation partition. norms-m (494 dreams) is reserved as the untouched final test set. Unlike Activities and Success & Failure, MF/GF is coded in b-baseline — however, b-baseline is a dream series with series-specific character codes ("Q") that the model cannot identify without series context, causing systematic character mis-coding in a subset of dreams. Normative collections (norms-f, norms-m) do not have this issue.
+
+**Current benchmark results (attribute-level F1):**
+
+MF F1 is computed at the attribute level: each (character, sub-type) pair is decomposed into `(slot, value)` tuples — number, gender, identity, age, sub-type — then scored via Counter intersection. This gives partial credit when the character is correct but the sub-type is wrong (or vice versa). GF F1 is computed over character attributes only (no sub-type).
+
+| Partition | Role | n dreams | MF GT dreams | F1 MF | F1 GF |
+|---|---|---|---|---|---|
+| b-baseline (all) | Development | 250 | 107 | 0.587* | 0.760 |
+| norms-f 1–100 | Validation | 100 | 26 | **0.728** | **1.000** |
+| norms-m | **Reserved final test** | 494 | — | — | — |
+
+*b-baseline MF F1 reflects the series-specific "Q" character code limitation (see note above). norms-f validation F1 is the primary benchmark.
 
 This module remains under active development pending final test on norms-m.
 

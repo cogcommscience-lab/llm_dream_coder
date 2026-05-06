@@ -288,6 +288,7 @@
         <li><a href="#social-interactions">Social Interactions</a></li>
         <li><a href="#activities">Activities</a></li>
         <li><a href="#success-failure">Success and Failure</a></li>
+        <li><a href="#mf-gf">Misfortunes &amp; Good Fortunes</a></li>
         <li><a href="#coming-soon">Coming Soon</a></li>
 
         <span class="section-label">Reference</span>
@@ -901,6 +902,72 @@ python success_failure.py --skip 50 --n 50          # validation partition (drea
       but one attribute is mis-coded.
     </p>
 
+    <!-- ── MISFORTUNES & GOOD FORTUNES ──────────────────────── -->
+    <h2 id="mf-gf">Misfortunes &amp; Good Fortunes Module — In Progress</h2>
+
+    <p>
+      The Misfortunes &amp; Good Fortunes module codes two categories of passive events:
+    </p>
+    <ul>
+      <li><strong>Misfortunes (MF)</strong>: Negative events that happen <em>to</em> a character from outside — not chosen by the character but undesirable events that befall them. Coded with a sub-type 1–6.</li>
+      <li><strong>Good Fortunes (GF)</strong>: Unexpectedly positive events that happen <em>to</em> a character without deliberate goal-directed effort — windfalls, lucky rescues, unexpected gifts. No sub-type.</li>
+    </ul>
+
+    <p><strong>Six MF sub-types:</strong></p>
+    <ul>
+      <li><strong>1 — Apprehension</strong>: The character's worry, anxiety, or dread is the primary narrative element</li>
+      <li><strong>2 — Physical accident/mishap</strong>: Unintentional physical harm not caused by deliberate act</li>
+      <li><strong>3 — Adverse situation</strong>: A seriously unpleasant circumstance (social scrutiny, displacement, hostile environment) without immediate physical danger</li>
+      <li><strong>4 — Physical jeopardy</strong>: Passive victim of acute physical danger from an external source (reckless vehicle, fire, threatening creature)</li>
+      <li><strong>5 — Physical suffering</strong>: Actual illness, injury, pain, or deprivation — already materialized, not merely feared</li>
+      <li><strong>6 — Death</strong>: A character literally dies within the dream narrative</li>
+    </ul>
+
+    <pre><code>python misfortunes_good_fortunes.py                              # all b-baseline dreams (dev)
+python misfortunes_good_fortunes.py --n 50                       # first 50 b-baseline dreams
+python misfortunes_good_fortunes.py --collection norms-f         # validation partition
+python misfortunes_good_fortunes.py --collection norms-f --n 50  # first 50 norms-f dreams
+python misfortunes_good_fortunes.py --dream-id b-baseline_0062   # single dream
+python misfortunes_good_fortunes.py --all                        # full dataset</code></pre>
+
+    <table>
+      <tr>
+        <th>Partition</th><th>Role</th><th>n dreams</th><th>MF GT dreams</th>
+        <th>F1 MF</th><th>F1 GF</th>
+      </tr>
+      <tr>
+        <td>b-baseline</td><td>Development</td><td>250</td><td>107</td>
+        <td>0.587*</td><td>0.760</td>
+      </tr>
+      <tr>
+        <td>norms-f 1–100</td><td>Validation</td><td>100</td><td>26</td>
+        <td><strong>0.728</strong></td><td><strong>1.000</strong></td>
+      </tr>
+      <tr>
+        <td>norms-m</td><td><strong>Reserved final test</strong></td>
+        <td>494</td><td>—</td><td>—</td><td>—</td>
+      </tr>
+    </table>
+
+    <div class="callout note">
+      <strong>Validation MF F1 (0.728) exceeds the ≥ 0.70 target.</strong>
+      MF F1 is computed at the attribute level: each (character, sub-type) pair is
+      decomposed into <code>(slot, value)</code> tuples — number, gender, identity,
+      age, sub-type — then scored via Counter intersection. GF F1 uses character
+      attributes only (no sub-type). Both give partial credit for near-misses.
+    </div>
+
+    <div class="callout warning">
+      <strong>Data partitioning note.</strong>
+      MF/GF has ground-truth codings in b-baseline, norms-f, and norms-m.
+      b-baseline (250 dreams) is the development partition. b-baseline is a dream
+      series with series-specific character codes ("Q") that the model cannot
+      identify without series context, causing systematic character mis-coding in a
+      subset of b-baseline dreams. Normative collections (norms-f, norms-m) do not
+      have this limitation; norms-f is the primary validation benchmark. norms-m
+      (n=494) is reserved as the untouched final test set.
+    </div>
+
     <!-- ── COMING SOON ────────────────────────────────────────── -->
     <h2 id="coming-soon">Coming Soon</h2>
 
@@ -918,8 +985,8 @@ python success_failure.py --skip 50 --n 50          # validation partition (drea
       </tr>
       <tr>
         <td>Misfortunes &amp; Good Fortunes</td>
-        <td><span class="status-plan">Planned</span></td>
-        <td>Negative and positive events that befall characters</td>
+        <td><span class="status-progress">Validated</span></td>
+        <td>Negative and positive events that befall characters — MF F1 0.73 / GF F1 1.00 (validation)</td>
       </tr>
       <tr>
         <td>Emotions</td>

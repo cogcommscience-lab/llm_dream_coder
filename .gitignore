@@ -24,6 +24,7 @@ characters_results.csv
 social_interactions_results.csv
 activities_results.csv
 success_failure_results.csv
+mf_gf_results.csv
 
 # Editor
 .vscode/
