@@ -27,7 +27,7 @@ The tool is **generalizable**: it operates on any dream report without per-serie
 |---|---|---|---|
 | Characters | Complete | 0.87 (non-family 0.89) | `characters.py` |
 | Social Interactions | Validated, awaiting final test | 0.65 validation (fri 0.79 on held-out norms-f) | `social_interactions.py` |
-| Activities | Planned | — | — |
+| Activities | Validated, awaiting final test | 0.72 validation (dev 0.77) | `activities.py` |
 | Striving | Planned | — | — |
 | Emotions | Planned | — | — |
 | Misfortunes & Good Fortunes | Planned | — | — |
@@ -181,6 +181,42 @@ Aggression and sex coding are strong (0.76–0.97). Friendly interaction F1 reac
 The same attribute-level F1 metric is used as for Characters: each tuple is decomposed into its constituent slots (init/rec character attributes, type, sub-type, direction) and scored via Counter intersection, giving partial credit when (for example) the type and sub-type are correct but the character code is mis-coded.
 
 **Methodology note.** During iterative development, b-baseline served as the development set, while norms-f and emma were used as validation sets — error patterns on these sets informed prompt refinements across multiple rounds. The norms-m collection (n=500) has been reserved as the **untouched final test set** and will be evaluated only once per module after all classifier development is complete; those will be the published held-out numbers.
+
+This module remains under active development pending final test on norms-m.
+
+---
+
+## Activities Module — In Progress
+
+The Activities module codes what every character (and the dreamer) does in a dream. Each activity is a three-field tuple: `(init, rec, code)` where `init` is the actor, `rec` is the recipient (or `null` for solo acts), and `code` is a sub-type letter plus an optional direction modifier.
+
+**Eight sub-types:** P (Physical), M (Movement on foot), L (Locomotion by vehicle), V (Verbal), S (Visual), A (Auditory), E (Expressive), C (Cognitive).
+
+**Direction modifiers:** *(none)* = solo, `>` = directed, `=` = mutual, `R` = reciprocated.
+
+**Usage:**
+
+```bash
+python activities.py                           # sample of 50 norms-f dreams (dev partition)
+python activities.py --n 20                    # specific number of dreams
+python activities.py --collection norms-f      # full collection
+python activities.py --dream-id norms-f_0001   # single dream
+python activities.py --skip 50 --n 50          # dreams 51-100 (validation partition)
+```
+
+**Data partitioning note.** Activities have ground-truth codings only in norms-f and norms-m. b-baseline and emma have zero activity codings. Development uses norms-f dreams 1–50; the validation set is norms-f dreams 51–491; norms-m (n=494) is reserved as the untouched final test set.
+
+**Current benchmark results (attribute-level F1):**
+
+| Partition | Role | n | Overall F1 | P | M | V | S | L | C | E | A |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| norms-f 1–50 | Development | 50 | 0.767 | 0.723 | 0.830 | 0.812 | 0.816 | 0.900 | 0.860 | 0.957 | 0.980 |
+| norms-f 51–100 | Validation (held-out) | 50 | **0.723** | 0.634 | 0.777 | 0.856 | 0.741 | 0.865 | 0.827 | 0.925 | 0.960 |
+| norms-m | **Reserved final test** | 494 | — | — | — | — | — | — | — | — | — |
+
+Overall validation F1 (0.72) meets the ≥ 0.70 target. P is the weakest sub-type on validation (0.634); remaining P errors are largely attributable to character-code identity confusion (K/S/U) inherited from the Characters module rather than wrong P decisions.
+
+Attribute-level F1 is computed via Counter intersection over decomposed `(slot, value)` tuples: each tuple is split into init/rec character attributes, sub-type, and direction, giving partial credit when sub-type or direction is correct but the character code is mis-coded.
 
 This module remains under active development pending final test on norms-m.
 

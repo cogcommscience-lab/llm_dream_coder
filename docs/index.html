@@ -286,6 +286,7 @@
           <li><a href="#char-evaluation">Evaluation</a></li>
         </ul>
         <li><a href="#social-interactions">Social Interactions</a></li>
+        <li><a href="#activities">Activities</a></li>
         <li><a href="#coming-soon">Coming Soon</a></li>
 
         <span class="section-label">Reference</span>
@@ -740,6 +741,88 @@ python social_interactions.py --dream-id b-baseline_0003</code></pre>
       and sub-type are correct but the character code is mis-coded.
     </p>
 
+    <!-- ── ACTIVITIES MODULE ─────────────────────────────────── -->
+    <h2 id="activities">Activities Module — In Progress</h2>
+
+    <p>
+      The Activities module codes what every character (and the dreamer) does
+      in a dream. Each activity is a three-field tuple:
+      <code>(init, rec, code)</code> where <code>init</code> is the actor,
+      <code>rec</code> is the recipient (or <code>null</code> for solo acts),
+      and <code>code</code> is a sub-type letter plus an optional direction
+      modifier (<code>&gt;</code> directed, <code>=</code> mutual,
+      <code>R</code> reciprocated).
+    </p>
+
+    <p>
+      <strong>Eight sub-types:</strong> P (Physical), M (Movement on foot),
+      L (Locomotion by vehicle), V (Verbal), S (Visual), A (Auditory),
+      E (Expressive), C (Cognitive).
+    </p>
+
+    <h3>Usage</h3>
+
+    <pre><code>python activities.py                           # 50 norms-f dev dreams
+python activities.py --n 20                    # specific number
+python activities.py --collection norms-f      # full collection
+python activities.py --dream-id norms-f_0001   # single dream
+python activities.py --skip 50 --n 50          # validation partition (dreams 51–100)</code></pre>
+
+    <h3>Current benchmark results (attribute-level F1)</h3>
+
+    <table>
+      <tr>
+        <th>Partition</th><th>Role</th><th>n</th>
+        <th>Overall F1</th><th>P</th><th>M</th><th>V</th><th>S</th><th>L</th><th>C</th><th>E</th><th>A</th>
+      </tr>
+      <tr>
+        <td>norms-f 1–50</td>
+        <td>Development</td>
+        <td>50</td>
+        <td>0.767</td>
+        <td>0.723</td><td>0.830</td><td>0.812</td><td>0.816</td>
+        <td>0.900</td><td>0.860</td><td>0.957</td><td>0.980</td>
+      </tr>
+      <tr>
+        <td>norms-f 51–100</td>
+        <td>Validation (held-out)</td>
+        <td>50</td>
+        <td><strong>0.723</strong></td>
+        <td>0.634</td><td>0.777</td><td>0.856</td><td>0.741</td>
+        <td>0.865</td><td>0.827</td><td>0.925</td><td>0.960</td>
+      </tr>
+      <tr>
+        <td>norms-m</td>
+        <td><strong>Reserved final test</strong></td>
+        <td>494</td>
+        <td>—</td>
+        <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
+      </tr>
+    </table>
+
+    <div class="callout note">
+      <strong>Overall validation F1 (0.72) meets the ≥ 0.70 target.</strong>
+      P (Physical) is the weakest sub-type on validation (0.634); remaining P
+      errors are largely attributable to character-code identity confusion
+      (K/S/U) inherited from the Characters module rather than wrong P
+      decisions.
+    </div>
+
+    <div class="callout warning">
+      <strong>Data partitioning note.</strong>
+      Activities have ground-truth codings only in norms-f and norms-m.
+      b-baseline and emma have zero activity codings. Development uses
+      norms-f dreams 1–50; the validation set is norms-f dreams 51–491;
+      norms-m (n=494) is reserved as the untouched final test set.
+    </div>
+
+    <p>
+      Attribute-level F1 is computed via Counter intersection over decomposed
+      <code>(slot, value)</code> tuples: each tuple is split into init/rec
+      character attributes, sub-type, and direction, giving partial credit
+      when sub-type or direction is correct but the character code is mis-coded.
+    </p>
+
     <!-- ── COMING SOON ────────────────────────────────────────── -->
     <h2 id="coming-soon">Coming Soon</h2>
 
@@ -747,8 +830,8 @@ python social_interactions.py --dream-id b-baseline_0003</code></pre>
       <tr><th>Module</th><th>Status</th><th>Description</th></tr>
       <tr>
         <td>Activities</td>
-        <td><span class="status-plan">Planned</span></td>
-        <td>Physical, verbal, visual, expressive, and cognitive acts</td>
+        <td><span class="status-progress">Validated</span></td>
+        <td>Physical, verbal, visual, expressive, and cognitive acts — overall F1 0.72 (validation)</td>
       </tr>
       <tr>
         <td>Striving</td>
