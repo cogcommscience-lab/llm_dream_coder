@@ -26,7 +26,7 @@ The tool is **generalizable**: it operates on any dream report without per-serie
 | Category | Status | Overall F1 (attribute-level, held-out) | Script |
 |---|---|---|---|
 | Characters | Complete | 0.87 (non-family 0.89) | `characters.py` |
-| Social Interactions | Validated, awaiting final test | 0.65 validation (fri 0.79 on held-out norms-f) | `social_interactions.py` |
+| Social Interactions | Validated, awaiting final test | agg 0.77 / fri 0.79 / sex 0.97 (norms-f validation) | `social_interactions.py` |
 | Activities | Validated, awaiting final test | 0.72 validation (dev 0.77) | `activities.py` |
 | Striving | Planned | — | — |
 | Emotions | Planned | — | — |
@@ -169,12 +169,14 @@ python social_interactions.py --dream-id b-baseline_0003
 
 **Current benchmark results (attribute-level F1):**
 
-| Collection | Role | n | Overall F1 | F1 agg | F1 fri | F1 sex |
-|---|---|---|---|---|---|---|
-| b-baseline | Development | 20 | 0.701 | 0.760 | 0.674 | 0.970 |
-| norms-f | Validation | 50 | 0.650 | 0.769 | **0.787** | 0.968 |
-| emma | Validation (annotator-bias) | 50 | 0.643 | 0.777 | 0.682 | 0.921 |
-| norms-m | **Reserved final test** | 500 | — | — | — | — |
+| Collection | Role | n | F1 agg | F1 fri | F1 sex |
+|---|---|---|---|---|---|
+| b-baseline | Development | 20 | 0.760 | 0.674 | 0.970 |
+| norms-f | Validation | 50 | 0.769 | **0.787** | 0.968 |
+| emma | Validation (annotator-bias) | 50 | 0.777 | 0.682 | 0.921 |
+| norms-m | **Reserved final test** | 500 | — | — | — |
+
+**Sub-type F1s are the primary reported metric.** Researchers typically use one or two interaction types depending on their study (e.g., only aggression for conflict research, only friendly for social connectedness). Each sub-type is an independent H/VdC scale; an aggregate overall F1 collapses them artificially and does not correspond to any standard research use case.
 
 Aggression and sex coding are strong (0.76–0.97). Friendly interaction F1 reached **0.787 on the held-out norms-f validation set** after iterative refinement (animal-interaction handling, conservative threshold rule, three new F4-focused few-shot examples). Friendly remains slightly below target on the b-baseline development set (0.674) and on emma (0.682, where annotator biographical bias inflates the human-coded count). Sub-type confusion is rare (91% sub-type agreement when init/rec/direction match) — the remaining error mode is type-level over- and under-coding.
 
