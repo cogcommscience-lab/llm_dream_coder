@@ -30,7 +30,7 @@ The tool is **generalizable**: it operates on any dream report without per-serie
 | Activities | Validated, awaiting final test | 0.72 validation (dev 0.77) | `activities.py` |
 | Success and Failure | Validated, awaiting final test | 0.91 dev / 0.89 validation (norms-f) | `success_failure.py` |
 | Misfortunes & Good Fortunes | Validated, awaiting final test | MF 0.73 / GF 1.00 (norms-f validation) | `misfortunes_good_fortunes.py` |
-| Emotions | Planned | — | — |
+| Emotions | Validated, awaiting final test | 0.935 mean F1 (norms-f validation) | `emotions.py` |
 | Settings | Planned | — | — |
 
 ---
@@ -300,6 +300,47 @@ MF F1 is computed at the attribute level: each (character, sub-type) pair is dec
 | norms-m | **Reserved final test** | 494 | — | — | — |
 
 *b-baseline MF F1 reflects the series-specific "Q" character code limitation (see note above). norms-f validation F1 is the primary benchmark.
+
+This module remains under active development pending final test on norms-m.
+
+---
+
+## Emotions Module — In Progress
+
+The Emotions module codes which characters (including the dreamer) explicitly experience one of five emotional states in a dream report. The key requirement: the emotion must be stated in words — the model does not infer feelings from events or actions.
+
+**Five emotion types:**
+- **AP — Apprehension**: fear, terror, panic, dread, nervousness, anxiety, embarrassment, being upset or disturbed in a threatening context
+- **HA — Happiness**: joy, happiness, pleasure, contentment, excitement, elation, satisfaction, delight
+- **AN — Anger**: anger, rage, annoyance, disgust, hostility, irritation, fury, indignation
+- **CO — Confusion**: confusion, bewilderment, puzzlement, surprise, perplexity, disorientation, finding something peculiar
+- **SD — Sadness**: sadness, grief, sorrow, depression, disappointment, despair, crying accompanied by a stated loss
+
+Each emotion is coded as a `(type, character)` pair — the simplest H/VdC format, with no sub-direction or initiator/recipient structure. The dreamer is coded as `D`; other characters use standard H/VdC codes.
+
+**Usage:**
+
+```bash
+python emotions.py                           # sample of 50 norms-f dreams (dev partition)
+python emotions.py --n 20                    # specific number of dreams
+python emotions.py --collection norms-f      # full collection
+python emotions.py --dream-id norms-f_0001   # single dream
+python emotions.py --skip 50 --n 50          # dreams 51-100 (validation partition)
+```
+
+**Data partitioning note.** Emotion codings exist in norms-f, norms-m, and b-baseline. Development uses norms-f dreams 1–50 (39/50 have at least one emotion coding); validation uses norms-f dreams 51–100; norms-m (494 dreams) is reserved as the untouched final test set.
+
+**Current benchmark results (attribute-level F1):**
+
+Per-type F1 is computed at the attribute level: for each emotion type, predicted and ground-truth character lists are decomposed into `(slot, value)` tuples (number, gender, identity, age) and scored via Counter intersection. Mean F1 is the average of the five per-type F1s. Overall F1 pools all `(emotion_type, char_attrs)` pairs together.
+
+| Partition | Role | n | AP | HA | AN | CO | SD | Mean F1 |
+|---|---|---|---|---|---|---|---|---|
+| norms-f 1–50 | Development | 50 | 0.970 | 0.995 | 1.000 | 0.940 | 1.000 | **0.981** |
+| norms-f 51–100 | Validation (held-out) | 50 | 0.935 | 0.938 | 0.960 | 0.920 | 0.922 | **0.935** |
+| norms-m | **Reserved final test** | 494 | — | — | — | — | — | — |
+
+At 0.935 validated mean F1, Emotions is the highest-scoring module in the project. AP is the most common emotion type (most dreams with a coding have at least one AP); AN is the most consistently coded (1.000 dev F1). Remaining errors are concentrated in character identity ambiguity (known vs. stranger when not explicit in the text) and a small number of AP/CO boundary cases.
 
 This module remains under active development pending final test on norms-m.
 
