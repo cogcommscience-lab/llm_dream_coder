@@ -32,6 +32,7 @@ The tool is **generalizable**: it operates on any dream report without per-serie
 | Misfortunes & Good Fortunes | Validated, awaiting final test | MF 0.73 / GF 1.00 (norms-f validation) | `misfortunes_good_fortunes.py` |
 | Emotions | Validated, awaiting final test | 0.935 mean F1 (norms-f validation) | `emotions.py` |
 | Settings | Validated, awaiting final test | 0.775 mean F1 (norms-f validation) | `settings.py` |
+| Objects | Validated, awaiting final test | 0.693 mean F1 (norms-f validation) | `objects.py` |
 
 ---
 
@@ -400,6 +401,70 @@ Each 2-letter code is decomposed into two attribute tuples — `("location", I/O
 | Distorted (D) | 0.734 | 4 |
 
 The AF (ambiguous + familiar) code is the most challenging — it appears frequently in validation dreams but rarely in the development set, requiring the model to generalize from limited examples. I/O location codes and U familiarity code perform strongly; the Q/F boundary remains the most common error mode.
+
+This module remains under active development pending final test on norms-m.
+
+---
+
+## Objects Module
+
+The Objects module codes all distinct physical objects that appear in a dream scene. Each object receives a 2-letter category code. Unlike most other modules, objects codes can repeat within a dream — each distinct instance of the same object type gets its own code (e.g., two suitcases = TR + TR; three food items = FO + FO + FO).
+
+**The 25 object codes:**
+
+| Code | Category | Examples |
+|---|---|---|
+| AR | Residential | house, apartment, dorm room, bedroom |
+| AV | Vocational | store, office, classroom, laboratory |
+| AE | Entertainment | restaurant, theater, museum, stadium |
+| AI | Institutional | hospital, church, courthouse, prison |
+| AD | Architectural Details | door, window, staircase, fireplace |
+| AM | Architectural Misc. | corridor, passageway, tower, fountain, fence |
+| AB | Structural Elements | rare — structural building components |
+| BH | Head | face, hair, eyes, nose, mouth |
+| BE | Extremities | arm, hand, leg, foot, fingers |
+| BT | Torso | shoulder, chest, abdomen, back |
+| BA | Anatomy | internal organs, blood, bones, growths |
+| BS | Sex | reproductive/excretory body parts |
+| CL | Clothing | dress, shoes, jewelry, accessories |
+| CM | Communication | book, letter, phone, newspaper |
+| FO | Food | all food and drink items |
+| HH | Household | furniture, appliances, containers |
+| IR | Recreation Implements | sporting goods, games, toys, instruments in use |
+| IT | Tools | tools, machinery, apparatus |
+| IW | Weapons | gun, sword, bomb |
+| MO | Money | currency, checks, bank books |
+| MS | Miscellaneous | objects not fitting any other category |
+| NA | Nature | trees, lakes, terrain, weather, animals |
+| RG | Regions | cities, towns, states, parks, yards |
+| ST | Streets | roads, bridges, railroads, sidewalks |
+| TR | Travel | cars, planes, boats, luggage |
+
+**Usage:**
+
+```bash
+python objects.py                            # sample of 50 norms-f dreams (dev partition)
+python objects.py --n 20                     # specific number of dreams
+python objects.py --collection norms-f       # full collection
+python objects.py --dream-id norms-f_0029   # single dream
+python objects.py --skip 50 --n 50          # dreams 51-100 (validation partition)
+```
+
+**Data partitioning note.** Objects codings exist in norms-f and norms-m only (b-baseline and emma have zero objects codings). Development uses norms-f dreams 1–50; validation uses norms-f dreams 51–100; norms-m (494 dreams) is reserved as the untouched final test set. Average ~5.25 object codes per dream.
+
+**Important:** The Nature code "NA" must not be converted to NaN — the loader uses `keep_default_na=False`.
+
+**Current benchmark results (F1):**
+
+Evaluation uses raw Counter-based F1 (no attribute decomposition — codes are atomic). Partial credit for getting the right count of each code type.
+
+| Partition | Role | n | Mean F1 | Precision | Recall |
+|---|---|---|---|---|---|
+| norms-f 1–50 | Development | 50 | **0.821** | 0.848 | 0.825 |
+| norms-f 51–100 | Validation (held-out) | 50 | **0.693** | 0.718 | 0.694 |
+| norms-m | **Reserved final test** | 494 | — | — | — |
+
+The validation gap (0.821 → 0.693) reflects three factors: dreams with no coded objects (empty GT, where the model learned to output []) concentrated in the validation set, the AM vs AR corridor distinction, and conservative RG coding. Prompt rules for all three were refined after validation for norms-m readiness.
 
 This module remains under active development pending final test on norms-m.
 
