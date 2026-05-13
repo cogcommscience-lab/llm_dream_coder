@@ -31,7 +31,7 @@ The tool is **generalizable**: it operates on any dream report without per-serie
 | Success and Failure | Validated, awaiting final test | 0.91 dev / 0.89 validation (norms-f) | `success_failure.py` |
 | Misfortunes & Good Fortunes | Validated, awaiting final test | MF 0.73 / GF 1.00 (norms-f validation) | `misfortunes_good_fortunes.py` |
 | Emotions | Validated, awaiting final test | 0.935 mean F1 (norms-f validation) | `emotions.py` |
-| Settings | Planned | — | — |
+| Settings | Validated, awaiting final test | 0.775 mean F1 (norms-f validation) | `settings.py` |
 
 ---
 
@@ -341,6 +341,65 @@ Per-type F1 is computed at the attribute level: for each emotion type, predicted
 | norms-m | **Reserved final test** | 494 | — | — | — | — | — | — |
 
 At 0.935 validated mean F1, Emotions is the highest-scoring module in the project. AP is the most common emotion type (most dreams with a coding have at least one AP); AN is the most consistently coded (1.000 dev F1). Remaining errors are concentrated in character identity ambiguity (known vs. stranger when not explicit in the text) and a small number of AP/CO boundary cases.
+
+This module remains under active development pending final test on norms-m.
+
+---
+
+## Settings Module — In Progress
+
+The Settings module codes the physical environment of each distinct scene in a dream. Each location receives a 2-letter code: `[Location][Familiarity]`.
+
+**Location types (first letter):**
+- **I — Indoor**: building, room, enclosed structure (dormitory, classroom, store, house)
+- **O — Outdoor**: outside in open air (street, road, field, lake, forest)
+- **A — Ambiguous**: physical setting exists but cannot be classified as indoor or outdoor (camp, vague location, town setting)
+- **N — No Setting**: truly no physical environment (NS only — spiritual/abstract dream with no described location)
+
+**Familiarity types (second letter):**
+- **F — Familiar**: place named by dreamer, or dreamer's own possessive space ("my room," named street)
+- **Q — Questionable**: place exists but no familiarity signal either way
+- **U — Unfamiliar**: explicit signal the dreamer doesn't recognize the place ("surroundings were unfamiliar," "a new home," "a strange town")
+- **D — Distorted**: dreamer knows the place type but it is physically wrong ("my room but it didn't look like mine," impossible features like seeing through walls)
+- **G — Geographic (outdoor only)**: named real-world location (city, state, lake, country)
+
+Multiple codes per dream are common (average 1.31 per dream). Unlike other modules, Settings codes have no character fields — each code is the 2-letter setting code alone. Every dream receives at least one code.
+
+**Usage:**
+
+```bash
+python settings.py                           # sample of 50 norms-f dreams (dev partition)
+python settings.py --n 20                    # specific number of dreams
+python settings.py --collection norms-f      # full collection
+python settings.py --dream-id norms-f_0018   # single dream
+python settings.py --skip 50 --n 50          # dreams 51-100 (validation partition)
+```
+
+**Data partitioning note.** Settings codings exist in norms-f and norms-m only (b-baseline and emma have zero settings codings). Development uses norms-f dreams 1–50; validation uses norms-f dreams 51–100; norms-m (494 dreams) is reserved as the untouched final test set.
+
+**Current benchmark results (F1):**
+
+Each 2-letter code is decomposed into two attribute tuples — `("location", I/O/A/N)` and `("familiarity", F/Q/U/D/G)` — and scored via Counter intersection at the attribute level. This gives 50% partial credit when location is correct but familiarity is wrong (or vice versa), and 0% for a completely incorrect code.
+
+| Partition | Role | n | Mean F1 | Precision | Recall |
+|---|---|---|---|---|---|
+| norms-f 1–50 | Development | 50 | **0.936** | 0.933 | 0.950 |
+| norms-f 51–100 | Validation (held-out) | 50 | **0.775** | 0.756 | 0.811 |
+| norms-m | **Reserved final test** | 494 | — | — | — |
+
+**Per-type breakdown (validation):**
+
+| Type | F1 (validation) | n dreams |
+|---|---|---|
+| Indoor (I) | 0.880 | 26 |
+| Outdoor (O) | 0.840 | 13 |
+| Ambiguous (A) | 0.464 | 11 |
+| Familiar (F) | 0.812 | 21 |
+| Questionable (Q) | 0.746 | 22 |
+| Unfamiliar (U) | 0.825 | 4 |
+| Distorted (D) | 0.734 | 4 |
+
+The AF (ambiguous + familiar) code is the most challenging — it appears frequently in validation dreams but rarely in the development set, requiring the model to generalize from limited examples. I/O location codes and U familiarity code perform strongly; the Q/F boundary remains the most common error mode.
 
 This module remains under active development pending final test on norms-m.
 

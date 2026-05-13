@@ -609,33 +609,6 @@ def evaluate_attribute(pred_chars, gt_chars):
     }
 
 
-def evaluate_overall(pred_dict, gt_dict):
-    """
-    Overall attribute-level F1 across all emotion types combined.
-    Each (emotion_type, char) pair decomposes into:
-      ("emotion_type", code) + char attribute tuples.
-    """
-    def decompose_all(d):
-        items = []
-        for code, chars in d.items():
-            for char in chars:
-                items.append(("emotion_type", code))
-                items.extend(decompose_character(char))
-        return Counter(items)
-
-    pred = decompose_all(pred_dict)
-    true = decompose_all(gt_dict)
-    tp = sum((pred & true).values())
-    precision = tp / sum(pred.values()) if pred else (1.0 if not true else 0.0)
-    recall    = tp / sum(true.values()) if true else (1.0 if not pred else 0.0)
-    f1 = (2 * precision * recall / (precision + recall)
-          if (precision + recall) > 0 else 0.0)
-    return {
-        "precision": round(precision, 3),
-        "recall":    round(recall,    3),
-        "f1":        round(f1,        3),
-    }
-
 
 # ─────────────────────────────────────────────────────────────────────────────
 # MAIN
@@ -704,10 +677,7 @@ def main():
                 error_row[f"f1_{et}"]   = None
                 error_row[f"precision_{et}"] = None
                 error_row[f"recall_{et}"]    = None
-            error_row["mean_f1"]           = None
-            error_row["f1_overall"]        = None
-            error_row["precision_overall"] = None
-            error_row["recall_overall"]    = None
+            error_row["mean_f1"] = None
             results.append(error_row)
             time.sleep(DELAY_SECONDS)
             continue
@@ -717,17 +687,15 @@ def main():
         for et in EMOTION_TYPES:
             per_type[et] = evaluate_attribute(pred.get(et, []), gt.get(et, []))
 
-        # Overall F1
-        overall = evaluate_overall(pred, gt)
         mean_f1 = round(sum(per_type[et]["f1"] for et in EMOTION_TYPES) / 5, 3)
 
-        has_gt  = any(len(gt.get(et, [])) > 0 for et in EMOTION_TYPES)
-        marker  = "" if has_gt else "  [no gt]"
+        has_gt = any(gt.get(et) for et in EMOTION_TYPES)
+        marker = "" if has_gt else "  [no gt]"
         print(
             f"  {'✓' if mean_f1 == 1.0 else '✗'}  {dream_id}"
             f"  pred={{{', '.join(et+':'+str(pred.get(et,[])) for et in EMOTION_TYPES if pred.get(et))}}}"
             f"  gt={{{', '.join(et+':'+str(gt.get(et,[])) for et in EMOTION_TYPES if gt.get(et))}}}"
-            f"  mean_f1={mean_f1:.2f}  overall={overall['f1']:.2f}{marker}"
+            f"  mean_f1={mean_f1:.2f}{marker}"
         )
 
         result_row = {"dream_id": dream_id}
@@ -737,11 +705,8 @@ def main():
             result_row[f"f1_{et}"]        = per_type[et]["f1"]
             result_row[f"precision_{et}"] = per_type[et]["precision"]
             result_row[f"recall_{et}"]    = per_type[et]["recall"]
-        result_row["mean_f1"]           = mean_f1
-        result_row["f1_overall"]        = overall["f1"]
-        result_row["precision_overall"] = overall["precision"]
-        result_row["recall_overall"]    = overall["recall"]
-        result_row["reasoning"]         = json.dumps(reasoning, ensure_ascii=False)
+        result_row["mean_f1"]  = mean_f1
+        result_row["reasoning"] = json.dumps(reasoning, ensure_ascii=False)
         result_row["dream_report"]      = str(dream_text)[:300]
         results.append(result_row)
 
@@ -767,17 +732,13 @@ def main():
                   f"  (p={valid[f'precision_{et}'].mean():.3f}"
                   f"  r={valid[f'recall_{et}'].mean():.3f})")
         print(f"\nMean F1 (avg of 5 types): {valid['mean_f1'].mean():.3f}")
-        print(f"Overall F1 (pooled)      : {valid['f1_overall'].mean():.3f}")
-        print(f"  Precision              : {valid['precision_overall'].mean():.3f}")
-        print(f"  Recall                 : {valid['recall_overall'].mean():.3f}")
 
         has_gt = valid[valid[[f"gt_{et}" for et in EMOTION_TYPES]].apply(
-            lambda r: any(r[f"gt_{et}"] != "[]" for et in EMOTION_TYPES), axis=1
+            lambda r: any(r[col] != "[]" for col in r.index), axis=1
         )]
         if len(has_gt) > 0:
             print(f"\nDreams with any GT emotion coding: {len(has_gt)}")
             print(f"  Mean F1  : {has_gt['mean_f1'].mean():.3f}")
-            print(f"  Overall F1: {has_gt['f1_overall'].mean():.3f}")
 
 
 if __name__ == "__main__":
