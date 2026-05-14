@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>llm_dream_coder — Documentation</title>
+  <title>LLM Dream Coder — Documentation</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -37,10 +37,7 @@
     a { color: var(--accent); text-decoration: none; }
     a:hover { color: var(--accent-2); text-decoration: underline; }
 
-    .layout {
-      display: flex;
-      min-height: 100vh;
-    }
+    .layout { display: flex; min-height: 100vh; }
 
     /* ── Sidebar ─────────────────────────────────────────────── */
     .sidebar {
@@ -67,10 +64,9 @@
 
     .sidebar-brand h1 {
       font-size: 1.1rem;
-      font-family: "Courier New", monospace;
       color: var(--text);
-      font-weight: bold;
-      letter-spacing: 0.02em;
+      font-weight: 700;
+      letter-spacing: -0.01em;
     }
 
     .sidebar-brand p {
@@ -175,8 +171,8 @@
     }
 
     pre {
-      background: #111827;
-      color: #e5e7eb;
+      background: #1f1d40;
+      color: #ddd8ff;
       padding: 1.25rem 1.5rem;
       border-radius: 18px;
       overflow-x: auto;
@@ -197,11 +193,7 @@
       margin: 1rem 0 1.5rem;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.88rem;
-    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
 
     th {
       background: rgba(107, 125, 204, 0.10);
@@ -281,7 +273,7 @@
   <!-- ── SIDEBAR ──────────────────────────────────────────────── -->
   <aside class="sidebar">
     <div class="sidebar-brand">
-      <h1>llm_dream_coder</h1>
+      <h1>LLM Dream Coder</h1>
       <p>Hall/Van de Castle coding<br>with large language models</p>
     </div>
     <nav>
@@ -304,9 +296,13 @@
         <li><a href="#activities">Activities</a></li>
         <li><a href="#success-failure">Success and Failure</a></li>
         <li><a href="#mf-gf">Misfortunes &amp; Good Fortunes</a></li>
-        <li><a href="#coming-soon">Coming Soon</a></li>
+        <li><a href="#emotions">Emotions</a></li>
+        <li><a href="#settings">Settings</a></li>
+        <li><a href="#objects">Objects</a></li>
+        <li><a href="#descriptive">Descriptive Elements</a></li>
 
         <span class="section-label">Reference</span>
+        <li><a href="#module-summary">Module Summary</a></li>
         <li><a href="#limitations">Known Limitations</a></li>
         <li><a href="#faq">FAQ</a></li>
         <li><a href="#citation">Citation</a></li>
@@ -319,7 +315,7 @@
 
     <div class="badges">
       <span class="badge">Python 3.9+</span>
-      <span class="badge green">Characters: Non-family F1 (attr) 0.89</span>
+      <span class="badge green">9 modules validated</span>
       <span class="badge orange">Model: claude-opus-4-6</span>
       <span class="badge gray">License: MIT</span>
     </div>
@@ -368,9 +364,11 @@
       <li><strong>Social Interactions</strong> — how characters relate to each other (aggression, friendliness, sexuality)</li>
       <li><strong>Activities</strong> — what characters do</li>
       <li><strong>Success and Failure</strong> — success and failure in goal pursuit</li>
-      <li><strong>Emotions</strong> — emotional tone and affect</li>
       <li><strong>Misfortunes &amp; Good Fortunes</strong> — negative and positive events</li>
+      <li><strong>Emotions</strong> — emotional tone and affect</li>
       <li><strong>Settings</strong> — where the dream takes place</li>
+      <li><strong>Objects</strong> — physical objects described in the dream</li>
+      <li><strong>Descriptive Elements</strong> — explicit quality modifiers</li>
     </ul>
 
     <p>
@@ -686,7 +684,7 @@ Attr age       : 0.938</code></pre>
 
     <!-- ── SOCIAL INTERACTIONS ──────────────────────────────────── -->
     <div class="section">
-    <h2 id="social-interactions">Social Interactions Module — In Progress</h2>
+    <h2 id="social-interactions">Social Interactions Module</h2>
 
     <p>
       The Social Interactions module codes all aggressive (<code>agg</code>),
@@ -705,7 +703,7 @@ Attr age       : 0.938</code></pre>
     <pre><code>python social_interactions.py --collection norms-f --n 50
 python social_interactions.py --dream-id b-baseline_0003</code></pre>
 
-    <h3>Current benchmark results (attribute-level F1)</h3>
+    <h3>Benchmark results (attribute-level F1)</h3>
 
     <div class="table-wrap">
     <table>
@@ -780,7 +778,7 @@ python social_interactions.py --dream-id b-baseline_0003</code></pre>
 
     <!-- ── ACTIVITIES MODULE ─────────────────────────────────── -->
     <div class="section">
-    <h2 id="activities">Activities Module — In Progress</h2>
+    <h2 id="activities">Activities Module</h2>
 
     <p>
       The Activities module codes what every character (and the dreamer) does
@@ -806,7 +804,7 @@ python activities.py --collection norms-f      # full collection
 python activities.py --dream-id norms-f_0001   # single dream
 python activities.py --skip 50 --n 50          # validation partition (dreams 51–100)</code></pre>
 
-    <h3>Current benchmark results (attribute-level F1)</h3>
+    <h3>Benchmark results (attribute-level F1)</h3>
 
     <div class="table-wrap">
     <table>
@@ -852,21 +850,14 @@ python activities.py --skip 50 --n 50          # validation partition (dreams 51
       <strong>Data partitioning note.</strong>
       Activities have ground-truth codings only in norms-f and norms-m.
       b-baseline and emma have zero activity codings. Development uses
-      norms-f dreams 1–50; the validation set is norms-f dreams 51–491;
+      norms-f dreams 1–50; the validation set is norms-f dreams 51–100;
       norms-m (n=494) is reserved as the untouched final test set.
     </div>
-
-    <p>
-      Attribute-level F1 is computed via Counter intersection over decomposed
-      <code>(slot, value)</code> tuples: each tuple is split into init/rec
-      character attributes, sub-type, and direction, giving partial credit
-      when sub-type or direction is correct but the character code is mis-coded.
-    </p>
     </div>
 
     <!-- ── SUCCESS AND FAILURE ──────────────────────────────────── -->
     <div class="section">
-    <h2 id="success-failure">Success and Failure Module — In Progress</h2>
+    <h2 id="success-failure">Success and Failure Module</h2>
 
     <p>
       The Success and Failure module codes goal-directed behavior outcomes:
@@ -896,7 +887,7 @@ python success_failure.py --collection norms-f      # full collection
 python success_failure.py --dream-id norms-f_0003   # single dream
 python success_failure.py --skip 50 --n 50          # validation partition (dreams 51–100)</code></pre>
 
-    <h3>Current benchmark results (attribute-level F1)</h3>
+    <h3>Benchmark results (attribute-level F1)</h3>
 
     <div class="table-wrap">
     <table>
@@ -940,18 +931,11 @@ python success_failure.py --skip 50 --n 50          # validation partition (drea
       the validation set is norms-f dreams 51–100; norms-m (n=494) is reserved
       as the untouched final test set.
     </div>
-
-    <p>
-      Attribute-level F1 is computed via Counter intersection over decomposed
-      <code>(slot, value)</code> tuples for character codes — number, gender,
-      identity, age — giving partial credit when the character type is correct
-      but one attribute is mis-coded.
-    </p>
     </div>
 
     <!-- ── MISFORTUNES & GOOD FORTUNES ──────────────────────── -->
     <div class="section">
-    <h2 id="mf-gf">Misfortunes &amp; Good Fortunes Module — In Progress</h2>
+    <h2 id="mf-gf">Misfortunes &amp; Good Fortunes Module</h2>
 
     <p>
       The Misfortunes &amp; Good Fortunes module codes two categories of passive events:
@@ -1019,37 +1003,432 @@ python misfortunes_good_fortunes.py --all                        # full dataset<
     </div>
     </div>
 
-    <!-- ── COMING SOON ────────────────────────────────────────── -->
+    <!-- ── EMOTIONS MODULE ────────────────────────────────────── -->
     <div class="section">
-    <h2 id="coming-soon">Coming Soon</h2>
+    <h2 id="emotions">Emotions Module</h2>
+
+    <p>
+      The Emotions module codes all emotions explicitly experienced by the dreamer or
+      other characters in the dream. Each emotion is a <code>(code, character)</code>
+      pair, where <code>character</code> is the standard H/VdC character code for who
+      felt the emotion (or <code>D</code> for the dreamer).
+    </p>
+
+    <p><strong>Five emotion types:</strong></p>
 
     <div class="table-wrap">
     <table>
-      <tr><th>Module</th><th>Status</th><th>Description</th></tr>
+      <tr><th>Code</th><th>Emotion</th><th>Examples</th></tr>
+      <tr><td><code>AP</code></td><td>Apprehension</td><td>anxiety, fear, worry, dread, nervousness, terror</td></tr>
+      <tr><td><code>HA</code></td><td>Happiness</td><td>joy, pleasure, excitement, affection, delight, contentment</td></tr>
+      <tr><td><code>AN</code></td><td>Anger</td><td>rage, frustration, irritation, hostility, indignation</td></tr>
+      <tr><td><code>CO</code></td><td>Confusion</td><td>bewilderment, puzzlement, embarrassment, surprise</td></tr>
+      <tr><td><code>SD</code></td><td>Sadness</td><td>grief, depression, remorse, regret, sorrow, distress</td></tr>
+    </table>
+    </div>
+
+    <h3>Usage</h3>
+
+    <pre><code>python emotions.py                           # 50 norms-f dev dreams
+python emotions.py --n 20                    # specific number
+python emotions.py --collection norms-f      # full collection
+python emotions.py --dream-id norms-f_0001   # single dream
+python emotions.py --skip 50 --n 50          # validation partition (dreams 51–100)</code></pre>
+
+    <h3>Benchmark results (attribute-level F1)</h3>
+
+    <div class="table-wrap">
+    <table>
+      <tr>
+        <th>Partition</th><th>Role</th><th>n</th>
+        <th>AP</th><th>HA</th><th>AN</th><th>CO</th><th>SD</th><th>Mean F1</th>
+      </tr>
+      <tr>
+        <td>norms-f 1–50</td>
+        <td>Development</td>
+        <td>50</td>
+        <td>0.970</td><td>0.995</td><td>1.000</td><td>0.940</td><td>1.000</td>
+        <td>0.981</td>
+      </tr>
+      <tr>
+        <td>norms-f 51–100</td>
+        <td>Validation (held-out)</td>
+        <td>50</td>
+        <td>0.935</td><td>0.938</td><td>0.960</td><td>0.920</td><td>0.922</td>
+        <td><strong>0.935</strong></td>
+      </tr>
+      <tr>
+        <td>norms-m</td>
+        <td><strong>Reserved final test</strong></td>
+        <td>494</td>
+        <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
+      </tr>
+    </table>
+    </div>
+
+    <div class="callout note">
+      <strong>Validation Mean F1 (0.935) — highest validated F1 in the project.</strong>
+      All five emotion types score above 0.92 on the held-out validation set. Emotions
+      is the most reliably coded H/VdC category: the boundaries between emotion types
+      are relatively discrete, and dream reports typically use explicit emotion vocabulary.
+    </div>
+
+    <div class="callout warning">
+      <strong>Data partitioning note.</strong>
+      Emotions have ground-truth codings in norms-f and norms-m. Development uses
+      norms-f dreams 1–50; the validation set is norms-f dreams 51–100; norms-m
+      (n=494) is reserved as the untouched final test set.
+    </div>
+
+    <p>
+      F1 is computed per emotion type via Counter intersection. Multiple instances of
+      the same emotion type in a dream are counted separately. Mean F1 averages the
+      five per-type scores.
+    </p>
+    </div>
+
+    <!-- ── SETTINGS MODULE ────────────────────────────────────── -->
+    <div class="section">
+    <h2 id="settings">Settings Module</h2>
+
+    <p>
+      The Settings module codes the physical location of each scene in the dream using
+      two dimensions: <strong>location type</strong> (indoor, outdoor, ambiguous) and
+      <strong>familiarity</strong> (familiar, questionable, unfamiliar, distorted, or
+      geographic). Only settings where the dreamer is physically present are coded;
+      locations mentioned in dialogue are not.
+    </p>
+
+    <div class="table-wrap">
+    <table>
+      <tr><th>Code</th><th>Location</th><th>Familiarity</th><th>Description</th></tr>
+      <tr><td><code>IF</code></td><td>Indoor</td><td>Familiar</td><td>Known interior space (my room, our kitchen)</td></tr>
+      <tr><td><code>IQ</code></td><td>Indoor</td><td>Questionable</td><td>Interior with no clear familiarity signal</td></tr>
+      <tr><td><code>IU</code></td><td>Indoor</td><td>Unfamiliar</td><td>Clearly strange or new interior space</td></tr>
+      <tr><td><code>ID</code></td><td>Indoor</td><td>Distorted</td><td>Physically impossible or surreal indoor space</td></tr>
+      <tr><td><code>OF</code></td><td>Outdoor</td><td>Familiar</td><td>Known outdoor location (my neighborhood, our yard)</td></tr>
+      <tr><td><code>OQ</code></td><td>Outdoor</td><td>Questionable</td><td>Outdoor with no clear familiarity signal</td></tr>
+      <tr><td><code>OU</code></td><td>Outdoor</td><td>Unfamiliar</td><td>Clearly strange or new outdoor location</td></tr>
+      <tr><td><code>OD</code></td><td>Outdoor</td><td>Distorted</td><td>Physically impossible or surreal outdoor space</td></tr>
+      <tr><td><code>OG</code></td><td>Outdoor</td><td>Geographic</td><td>Named real-world geographic location (Paris, the Amazon)</td></tr>
+      <tr><td><code>AF</code></td><td>Ambiguous</td><td>Familiar</td><td>No indoor/outdoor description but familiar territory</td></tr>
+      <tr><td><code>AQ</code></td><td>Ambiguous</td><td>Questionable</td><td>No indoor/outdoor description, familiarity unclear</td></tr>
+      <tr><td><code>AU</code></td><td>Ambiguous</td><td>Unfamiliar</td><td>Vague setting, clearly unfamiliar</td></tr>
+      <tr><td><code>AD</code></td><td>Ambiguous</td><td>Distorted</td><td>Vague setting, physically impossible</td></tr>
+      <tr><td><code>NS</code></td><td>—</td><td>—</td><td>No setting — truly no sense of place at all</td></tr>
+    </table>
+    </div>
+
+    <h3>Usage</h3>
+
+    <pre><code>python settings.py                           # 50 norms-f dev dreams
+python settings.py --n 20                    # specific number
+python settings.py --collection norms-f      # full collection
+python settings.py --dream-id norms-f_0001   # single dream
+python settings.py --skip 50 --n 50          # validation partition (dreams 51–100)</code></pre>
+
+    <h3>Benchmark results (attribute-level F1)</h3>
+
+    <div class="table-wrap">
+    <table>
+      <tr><th>Partition</th><th>Role</th><th>n</th><th>Mean F1</th><th>Precision</th><th>Recall</th></tr>
+      <tr>
+        <td>norms-f 1–50</td>
+        <td>Development</td>
+        <td>50</td>
+        <td>0.936</td><td>0.933</td><td>0.950</td>
+      </tr>
+      <tr>
+        <td>norms-f 51–100</td>
+        <td>Validation (held-out)</td>
+        <td>50</td>
+        <td><strong>0.775</strong></td><td>0.756</td><td>0.811</td>
+      </tr>
+      <tr>
+        <td>norms-m</td>
+        <td><strong>Reserved final test</strong></td>
+        <td>494</td>
+        <td>—</td><td>—</td><td>—</td>
+      </tr>
+    </table>
+    </div>
+
+    <div class="callout note">
+      <strong>Validation Mean F1 (0.775) exceeds the ≥ 0.70 target.</strong>
+      Each setting code is decomposed into its two constituent attributes (location
+      type, familiarity) and scored via Counter intersection, giving 50% partial
+      credit when one attribute is correct. Settings and Objects have ground-truth
+      codings only in norms-f and norms-m; b-baseline and emma have zero codings.
+    </div>
+    </div>
+
+    <!-- ── OBJECTS MODULE ─────────────────────────────────────── -->
+    <div class="section">
+    <h2 id="objects">Objects Module</h2>
+
+    <p>
+      The Objects module codes all explicitly described physical objects mentioned in a
+      dream report. Each object receives a two-letter category code. Multiple instances
+      of the same object type are coded separately (two suitcases = <code>TR TR</code>).
+      F1 is computed via raw Counter intersection — codes are atomic and not decomposed.
+    </p>
+
+    <div class="table-wrap">
+    <table>
+      <tr><th>Code</th><th>Category</th><th>Examples</th></tr>
+      <tr><td><code>AR</code></td><td>Architecture — rooms (general)</td><td>room, hall, office, store</td></tr>
+      <tr><td><code>AV</code></td><td>Architecture — vocational/educational</td><td>classroom, laboratory, lecture hall</td></tr>
+      <tr><td><code>AE</code></td><td>Architecture — entertainment/recreational</td><td>theater, gym, church, dance hall</td></tr>
+      <tr><td><code>AI</code></td><td>Architecture — indoor locations</td><td>attic, basement, elevator, staircase</td></tr>
+      <tr><td><code>AD</code></td><td>Architecture — details</td><td>door, window, wall, floor, ceiling, stairs</td></tr>
+      <tr><td><code>AM</code></td><td>Architecture — miscellaneous</td><td>corridor, hallway, passage, connecting space</td></tr>
+      <tr><td><code>AB</code></td><td>Architecture — buildings (exterior)</td><td>house, hospital, school, factory</td></tr>
+      <tr><td><code>BH</code></td><td>Body — human body</td><td>hand, face, hair, legs, eyes</td></tr>
+      <tr><td><code>BE</code></td><td>Body — excretions/products</td><td>blood, sweat, tears, urine</td></tr>
+      <tr><td><code>BT</code></td><td>Body — technology/apparatus</td><td>cast, bandage, medical device, wheelchair</td></tr>
+      <tr><td><code>BA</code></td><td>Body — anatomy/biology</td><td>cancer, organ, tissue, growth</td></tr>
+      <tr><td><code>BS</code></td><td>Body — substances</td><td>medicine, drug, pill, injection</td></tr>
+      <tr><td><code>CL</code></td><td>Clothing</td><td>dress, shirt, shoes, coat, uniform</td></tr>
+      <tr><td><code>CM</code></td><td>Communications/media</td><td>phone, letter, book, newspaper, sign</td></tr>
+      <tr><td><code>FO</code></td><td>Food</td><td>bread, meat, fruit, meal, drink</td></tr>
+      <tr><td><code>HH</code></td><td>Household</td><td>furniture, lamp, bed, dishes, appliances</td></tr>
+      <tr><td><code>IR</code></td><td>Implements — recreation/instruments</td><td>musical instrument, sports equipment</td></tr>
+      <tr><td><code>IT</code></td><td>Implements — tools</td><td>hammer, knife, scissors, machine</td></tr>
+      <tr><td><code>IW</code></td><td>Implements — weapons</td><td>gun, sword, bomb, spear</td></tr>
+      <tr><td><code>MO</code></td><td>Money/finances</td><td>cash, check, wallet, bank book</td></tr>
+      <tr><td><code>MS</code></td><td>Miscellaneous</td><td>objects not fitting other categories</td></tr>
+      <tr><td><code>NA</code></td><td>Nature</td><td>tree, water, mountain, animal, sky, weather</td></tr>
+      <tr><td><code>RG</code></td><td>Regions</td><td>city, country, named geographic area dreamer visits</td></tr>
+      <tr><td><code>ST</code></td><td>Streets/infrastructure</td><td>road, bridge, sidewalk, railroad, path</td></tr>
+      <tr><td><code>TR</code></td><td>Travel/transportation</td><td>car, bus, train, airplane, boat, bicycle</td></tr>
+    </table>
+    </div>
+
+    <h3>Usage</h3>
+
+    <pre><code>python objects.py                           # 50 norms-f dev dreams
+python objects.py --n 20                    # specific number
+python objects.py --collection norms-f      # full collection
+python objects.py --dream-id norms-f_0001   # single dream
+python objects.py --skip 50 --n 50          # validation partition (dreams 51–100)</code></pre>
+
+    <h3>Benchmark results (Counter F1)</h3>
+
+    <div class="table-wrap">
+    <table>
+      <tr><th>Partition</th><th>Role</th><th>n</th><th>Mean F1</th><th>Precision</th><th>Recall</th></tr>
+      <tr>
+        <td>norms-f 1–50</td>
+        <td>Development</td>
+        <td>50</td>
+        <td>0.821</td><td>0.848</td><td>0.825</td>
+      </tr>
+      <tr>
+        <td>norms-f 51–100</td>
+        <td>Validation (held-out)</td>
+        <td>50</td>
+        <td><strong>0.758</strong></td><td>0.798</td><td>0.739</td>
+      </tr>
+      <tr>
+        <td>norms-m</td>
+        <td><strong>Reserved final test</strong></td>
+        <td>494</td>
+        <td>—</td><td>—</td><td>—</td>
+      </tr>
+    </table>
+    </div>
+
+    <div class="callout note">
+      <strong>Validation Mean F1 (0.758) exceeds the ≥ 0.70 target.</strong>
+      F1 is computed via raw Counter intersection — each code instance is counted
+      separately, and no attribute decomposition is applied. Objects and Settings have
+      ground-truth codings only in norms-f and norms-m; b-baseline and emma have zero
+      object codings.
+    </div>
+
+    <div class="callout warning">
+      <strong>Implementation note: NA code and pandas defaults.</strong>
+      The <code>NA</code> code (Nature) is silently converted to <code>NaN</code> by
+      pandas' default CSV parsing. <code>keep_default_na=False</code> is required in
+      <code>pd.read_csv()</code> calls when loading codings files.
+    </div>
+    </div>
+
+    <!-- ── DESCRIPTIVE ELEMENTS MODULE ───────────────────────── -->
+    <div class="section">
+    <h2 id="descriptive">Descriptive Elements Module</h2>
+
+    <p>
+      The Descriptive Elements module codes explicit quality-describing words in dream
+      reports. Each code is a two-character polarity pair: a dimension letter and a
+      <code>+</code> or <code>−</code> sign. Multiple instances of the same code are
+      counted separately; F1 is computed via raw Counter intersection.
+    </p>
+
+    <div class="table-wrap">
+    <table>
+      <tr><th>Dimension</th><th>+ Code</th><th>Examples (+)</th><th>− Code</th><th>Examples (−)</th></tr>
+      <tr>
+        <td>Age / temporality</td><td><code>A+</code></td><td>old, ancient, aged</td>
+        <td><code>A−</code></td><td>young, new, fresh</td>
+      </tr>
+      <tr>
+        <td>Color / brightness</td><td><code>C+</code></td><td>colorful, bright, vivid</td>
+        <td><code>C−</code></td><td>colorless, gray, pale</td>
+      </tr>
+      <tr>
+        <td>Density / size</td><td><code>D+</code></td><td>large, spacious, crowded, full</td>
+        <td><code>D−</code></td><td>small, empty, sparse (bounded container only)</td>
+      </tr>
+      <tr>
+        <td>Evaluative quality</td><td><code>E+</code></td><td>beautiful, good (aesthetic), excellent</td>
+        <td><code>E−</code></td><td>ugly, bad, disgusting, poor (conditions)</td>
+      </tr>
+      <tr>
+        <td>Intensity</td><td><code>I+</code></td><td>very, extremely, intensely, vivid</td>
+        <td><code>I−</code></td><td>slightly, barely, weakly (rare)</td>
+      </tr>
+      <tr>
+        <td>Linearity</td><td><code>L+</code></td><td>straight, long, linear, extended</td>
+        <td><code>L−</code></td><td>curved, short, twisted, crooked</td>
+      </tr>
+      <tr>
+        <td>Size / quantity</td><td><code>S+</code></td><td>lots of, many, millions of (quantity)</td>
+        <td><code>S−</code></td><td>little, few, tiny (person or amount)</td>
+      </tr>
+      <tr>
+        <td>Temperature</td><td><code>T+</code></td><td>warm, hot, burning</td>
+        <td><code>T−</code></td><td>cool, cold, freezing</td>
+      </tr>
+      <tr>
+        <td>Velocity / speed</td><td><code>V+</code></td><td>fast, quickly, rapid</td>
+        <td><code>V−</code></td><td>slow, gradually, leisurely</td>
+      </tr>
+    </table>
+    </div>
+
+    <h3>Usage</h3>
+
+    <pre><code>python descriptive.py                           # 50 norms-f dev dreams
+python descriptive.py --n 20                    # specific number
+python descriptive.py --collection norms-f      # full collection
+python descriptive.py --dream-id norms-f_0001   # single dream
+python descriptive.py --skip 50 --n 50          # validation partition (dreams 51–100)</code></pre>
+
+    <h3>Benchmark results (Counter F1)</h3>
+
+    <div class="table-wrap">
+    <table>
+      <tr><th>Partition</th><th>Role</th><th>n</th><th>Mean F1</th><th>Precision</th><th>Recall</th></tr>
+      <tr>
+        <td>norms-f 1–50</td>
+        <td>Development</td>
+        <td>50</td>
+        <td>0.857</td><td>0.854</td><td>0.902</td>
+      </tr>
+      <tr>
+        <td>norms-f 51–100</td>
+        <td>Validation (held-out)</td>
+        <td>50</td>
+        <td><strong>0.761</strong></td><td>0.746</td><td>0.822</td>
+      </tr>
+      <tr>
+        <td>norms-m</td>
+        <td><strong>Reserved final test</strong></td>
+        <td>494</td>
+        <td>—</td><td>—</td><td>—</td>
+      </tr>
+    </table>
+    </div>
+
+    <div class="callout note">
+      <strong>Validation Mean F1 (0.761) exceeds the ≥ 0.70 target.</strong>
+      Descriptive Elements is the most subjectively coded H/VdC category — human coders
+      apply a "salience" filter that is inherently variable, placing a natural ceiling
+      around 0.85. I+ (intensity) is the most common code and the largest source of
+      variability; approximately 14% of dreams have no descriptor codings at all.
+    </div>
+
+    <div class="callout warning">
+      <strong>Data partitioning note.</strong>
+      Descriptive Element codings (<code>coding_type == "mod"</code>) exist only in
+      norms-f and norms-m. b-baseline and emma have zero modifier codings. Development
+      uses norms-f dreams 1–50; the validation set is norms-f dreams 51–100; norms-m
+      is reserved as the untouched final test set.
+    </div>
+    </div>
+
+    <!-- ── MODULE SUMMARY ─────────────────────────────────────── -->
+    <div class="section">
+    <h2 id="module-summary">Module Summary</h2>
+
+    <p>All nine H/VdC coding modules are implemented and validated. norms-m (n=494) is reserved as the untouched final test set for all modules.</p>
+
+    <div class="table-wrap">
+    <table>
+      <tr><th>Module</th><th>Script</th><th>Status</th><th>Validation F1</th><th>Partition</th></tr>
+      <tr>
+        <td>Characters</td>
+        <td><code>characters.py</code></td>
+        <td><span class="status-done">Validated</span></td>
+        <td>0.889 non-family</td>
+        <td>norms-f (held-out)</td>
+      </tr>
+      <tr>
+        <td>Social Interactions</td>
+        <td><code>social_interactions.py</code></td>
+        <td><span class="status-done">Validated</span></td>
+        <td>0.787 fri / 0.769 agg</td>
+        <td>norms-f (held-out)</td>
+      </tr>
       <tr>
         <td>Activities</td>
-        <td><span class="status-progress">Validated</span></td>
-        <td>Physical, verbal, visual, expressive, and cognitive acts — overall F1 0.72 (validation)</td>
+        <td><code>activities.py</code></td>
+        <td><span class="status-done">Validated</span></td>
+        <td>0.723 overall</td>
+        <td>norms-f 51–100</td>
       </tr>
       <tr>
         <td>Success and Failure</td>
-        <td><span class="status-progress">Validated</span></td>
-        <td>Success and failure in goal-directed behavior — mean F1 0.89 (validation)</td>
+        <td><code>success_failure.py</code></td>
+        <td><span class="status-done">Validated</span></td>
+        <td>0.887 mean</td>
+        <td>norms-f 51–100</td>
       </tr>
       <tr>
         <td>Misfortunes &amp; Good Fortunes</td>
-        <td><span class="status-progress">Validated</span></td>
-        <td>Negative and positive events that befall characters — MF F1 0.73 / GF F1 1.00 (validation)</td>
+        <td><code>misfortunes_good_fortunes.py</code></td>
+        <td><span class="status-done">Validated</span></td>
+        <td>0.728 MF / 1.000 GF</td>
+        <td>norms-f 1–100</td>
       </tr>
       <tr>
         <td>Emotions</td>
-        <td><span class="status-plan">Planned</span></td>
-        <td>Apprehension, anger, happiness, sadness, confusion</td>
+        <td><code>emotions.py</code></td>
+        <td><span class="status-done">Validated</span></td>
+        <td>0.935 mean</td>
+        <td>norms-f 51–100</td>
       </tr>
       <tr>
         <td>Settings</td>
-        <td><span class="status-plan">Planned</span></td>
-        <td>Indoor, outdoor, familiar, unfamiliar, geographic</td>
+        <td><code>settings.py</code></td>
+        <td><span class="status-done">Validated</span></td>
+        <td>0.775 mean</td>
+        <td>norms-f 51–100</td>
+      </tr>
+      <tr>
+        <td>Objects</td>
+        <td><code>objects.py</code></td>
+        <td><span class="status-done">Validated</span></td>
+        <td>0.758 mean</td>
+        <td>norms-f 51–100</td>
+      </tr>
+      <tr>
+        <td>Descriptive Elements</td>
+        <td><code>descriptive.py</code></td>
+        <td><span class="status-done">Validated</span></td>
+        <td>0.761 mean</td>
+        <td>norms-f 51–100</td>
       </tr>
     </table>
     </div>
@@ -1154,8 +1533,8 @@ python misfortunes_good_fortunes.py --all                        # full dataset<
 
     <p>If you use this tool in published research, please cite:</p>
 
-    <pre><code>Kee, R. (2026). llm_dream_coder: Semi-automated Hall/Van de Castle dream content
-coding using large language models. GitHub.
+    <pre><code>Kee, R. &amp; Huskey, R. (2026). llm_dream_coder: Semi-automated Hall/Van de Castle
+dream content coding using large language models. GitHub.
 https://github.com/cogcommscience-lab/llm_dream_coder</code></pre>
 
     <p>For the Hall/Van de Castle coding system itself, cite:</p>
@@ -1167,7 +1546,7 @@ Appleton-Century-Crofts.</code></pre>
       <p>
         Built by Rachael Kee &nbsp;|&nbsp;
         <a href="https://github.com/cogcommscience-lab/llm_dream_coder">GitHub</a> &nbsp;|&nbsp;
-        MIT License &nbsp;|&nbsp; Contact: raachaelkee@gmail.com
+        MIT License &nbsp;|&nbsp; Contact: rlkee@ucdavis.edu
       </p>
     </footer>
     </div>
