@@ -32,7 +32,7 @@ The tool is **generalizable**: it operates on any dream report without per-serie
 | Misfortunes & Good Fortunes | Validated, awaiting final test | MF 0.73 / GF 1.00 (norms-f validation) | `misfortunes_good_fortunes.py` |
 | Emotions | Validated, awaiting final test | 0.935 mean F1 (norms-f validation) | `emotions.py` |
 | Settings | Validated, awaiting final test | 0.775 mean F1 (norms-f validation) | `settings.py` |
-| Objects | Validated, awaiting final test | 0.693 mean F1 (norms-f validation) | `objects.py` |
+| Objects | Validated, awaiting final test | 0.758 mean F1 (norms-f validation) | `objects.py` |
 
 ---
 
@@ -461,10 +461,10 @@ Evaluation uses raw Counter-based F1 (no attribute decomposition — codes are a
 | Partition | Role | n | Mean F1 | Precision | Recall |
 |---|---|---|---|---|---|
 | norms-f 1–50 | Development | 50 | **0.821** | 0.848 | 0.825 |
-| norms-f 51–100 | Validation (held-out) | 50 | **0.693** | 0.718 | 0.694 |
+| norms-f 51–100 | Validation (held-out) | 50 | **0.758** | 0.798 | 0.739 |
 | norms-m | **Reserved final test** | 494 | — | — | — |
 
-The validation gap (0.821 → 0.693) reflects three factors: dreams with no coded objects (empty GT, where the model learned to output []) concentrated in the validation set, the AM vs AR corridor distinction, and conservative RG coding. Prompt rules for all three were refined after validation for norms-m readiness.
+Objects is the most categorically complex module (25 codes, repeating instances, no character fields). The primary challenge is the MS (miscellaneous) category, which is inherently unpredictable, and correct counting of object instances.
 
 This module remains under active development pending final test on norms-m.
 
