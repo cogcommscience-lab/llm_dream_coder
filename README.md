@@ -33,6 +33,7 @@ The tool is **generalizable**: it operates on any dream report without per-serie
 | Emotions | Validated, awaiting final test | 0.935 mean F1 (norms-f validation) | `emotions.py` |
 | Settings | Validated, awaiting final test | 0.775 mean F1 (norms-f validation) | `settings.py` |
 | Objects | Validated, awaiting final test | 0.758 mean F1 (norms-f validation) | `objects.py` |
+| Descriptive Elements | Validated, awaiting final test | 0.761 mean F1 (norms-f validation) | `descriptive.py` |
 
 ---
 
@@ -465,6 +466,52 @@ Evaluation uses raw Counter-based F1 (no attribute decomposition — codes are a
 | norms-m | **Reserved final test** | 494 | — | — | — |
 
 Objects is the most categorically complex module (25 codes, repeating instances, no character fields). The primary challenge is the MS (miscellaneous) category, which is inherently unpredictable, and correct counting of object instances.
+
+This module remains under active development pending final test on norms-m.
+
+---
+
+## Descriptive Elements Module
+
+The Descriptive Elements module codes explicit descriptive quality words in dream reports across 9 dimensions. Unlike most modules, there are no character fields — each dream produces a flat list of polarity codes (e.g., `["I+", "I+", "S-", "C+"]`). Codes repeat when the same quality word appears multiple times.
+
+**The 18 codes (9 dimensions × +/−):**
+
+| Code | Dimension | + Meaning | − Meaning |
+|---|---|---|---|
+| C+/C− | Color | Chromatic (red, blue, gold) | Achromatic (black, white, gray) |
+| S+/S− | Size | Large, big, huge, tall, lots of | Small, tiny, little, short |
+| A+/A− | Age | Old, ancient, aged | Young, new, modern |
+| D+/D− | Density | Full, crowded, jammed | Empty, hollow, vacant |
+| T+/T− | Thermal | Hot, warm | Cold, cool, freezing |
+| V+/V− | Velocity | Fast, quickly, hurriedly | Slowly, sluggishly |
+| L+/L− | Linearity | Straight, flat, level | Curved, crooked, winding |
+| I+/I− | Intensity | Very, extremely, completely | Slightly, barely, calmly |
+| E+/E− | Evaluation | Beautiful, handsome, nice | Ugly, disgusting, wrong, poor |
+
+**Usage:**
+
+```bash
+python descriptive.py                            # sample of 50 norms-f dreams (dev partition)
+python descriptive.py --n 20                     # specific number of dreams
+python descriptive.py --collection norms-f       # full collection
+python descriptive.py --dream-id norms-f_0013   # single dream
+python descriptive.py --skip 50 --n 50          # dreams 51-100 (validation partition)
+```
+
+**Data partitioning note.** Descriptive codings (coding_type="mod") exist in norms-f and norms-m only. Development uses norms-f dreams 1–50; validation uses norms-f dreams 51–100; norms-m is reserved as the untouched final test set. Average ~3.3 modifier codes per dream among dreams with any codings; about 1 in 7 dreams has zero modifier codes.
+
+**Current benchmark results (F1):**
+
+Evaluation uses raw Counter-based F1 (codes are atomic; no decomposition). Partial credit for correct count per code type.
+
+| Partition | Role | n | Mean F1 | Precision | Recall |
+|---|---|---|---|---|---|
+| norms-f 1–50 | Development | 50 | **0.857** | 0.854 | 0.902 |
+| norms-f 51–100 | Validation (held-out) | 50 | **0.761** | 0.746 | 0.822 |
+| norms-m | **Reserved final test** | 494 | — | — | — |
+
+Descriptive Elements is the most subjectively coded H/VdC category — human coders apply selective judgment about which quality words are "salient" enough to code. Intensity (I) is the most common code (~43% of codings are I+) and also the highest source of variability. Empty output is correct and common (~14% of dreams in norms-f have no modifier codings).
 
 This module remains under active development pending final test on norms-m.
 
