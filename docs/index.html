@@ -5,21 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>llm_dream_coder — Documentation</title>
   <style>
-    /* ── Reset & base ─────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: "Georgia", "Times New Roman", serif;
-      font-size: 16px;
-      line-height: 1.7;
-      color: #222;
-      background: #f7f8fe;
+    :root {
+      --bg-start: #eef0fc;
+      --bg-mid:   #e8e4f8;
+      --bg-end:   #ece8fc;
+      --panel:    rgba(255, 255, 255, 0.76);
+      --panel-strong: rgba(255, 255, 255, 0.94);
+      --text:     #1a1830;
+      --muted:    #5a5880;
+      --border:   rgba(107, 125, 204, 0.18);
+      --accent:   #6b7dcc;
+      --accent-2: #9b6de8;
+      --shadow:   0 12px 48px rgba(80, 70, 180, 0.10);
     }
 
-    a { color: #6b7dcc; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 8%,  rgba(107, 125, 204, 0.28), transparent 35%),
+        radial-gradient(circle at 88% 18%, rgba(155, 109, 232, 0.20), transparent 28%),
+        radial-gradient(circle at 50% 82%, rgba(100, 140, 220, 0.14), transparent 38%),
+        linear-gradient(160deg, var(--bg-start) 0%, var(--bg-mid) 50%, var(--bg-end) 100%);
+      background-attachment: fixed;
+    }
 
-    /* ── Layout ──────────────────────────────────────────────── */
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--accent-2); text-decoration: underline; }
+
     .layout {
       display: flex;
       min-height: 100vh;
@@ -29,57 +46,54 @@
     .sidebar {
       width: 260px;
       flex-shrink: 0;
-      background: linear-gradient(180deg, #1e1d3f 0%, #1a1938 100%);
-      color: #cccaf2;
+      background: rgba(255, 255, 255, 0.68);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-right: 1px solid var(--border);
+      box-shadow: 4px 0 32px rgba(90, 80, 180, 0.08);
+      color: var(--text);
       padding: 2rem 0;
       position: sticky;
       top: 0;
       height: 100vh;
       overflow-y: auto;
-      box-shadow: 2px 0 20px rgba(110, 100, 200, 0.12);
     }
 
     .sidebar-brand {
       padding: 0 1.5rem 1.5rem;
-      border-bottom: 1px solid #2e2d5a;
+      border-bottom: 1px solid var(--border);
       margin-bottom: 1rem;
     }
 
     .sidebar-brand h1 {
       font-size: 1.1rem;
       font-family: "Courier New", monospace;
-      color: #ffffff;
+      color: var(--text);
       font-weight: bold;
       letter-spacing: 0.02em;
     }
 
     .sidebar-brand p {
       font-size: 0.78rem;
-      color: #8886c8;
+      color: var(--muted);
       margin-top: 0.25rem;
-      font-family: sans-serif;
     }
 
-    .sidebar nav ul {
-      list-style: none;
-    }
-
-    .sidebar nav > ul > li {
-      margin-bottom: 0.1rem;
-    }
+    .sidebar nav ul { list-style: none; }
+    .sidebar nav > ul > li { margin-bottom: 0.1rem; }
 
     .sidebar nav a {
       display: block;
       padding: 0.4rem 1.5rem;
-      color: #b2aff0;
+      color: var(--muted);
       font-size: 0.875rem;
-      font-family: sans-serif;
+      border-radius: 8px;
       transition: background 0.15s, color 0.15s;
     }
 
     .sidebar nav a:hover {
-      background: #2e2d5a;
-      color: #ffffff;
+      background: rgba(107, 125, 204, 0.12);
+      color: var(--accent);
       text-decoration: none;
     }
 
@@ -89,8 +103,8 @@
       font-size: 0.7rem;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: #6664b0;
-      font-family: sans-serif;
+      color: var(--accent);
+      opacity: 0.7;
       font-weight: bold;
     }
 
@@ -102,27 +116,38 @@
     /* ── Main content ─────────────────────────────────────────── */
     .main {
       flex: 1;
-      padding: 3rem 4rem 5rem 3.5rem;
-      max-width: 860px;
+      padding: 2rem 2.5rem 4rem;
+      max-width: 900px;
     }
 
-    /* ── Section headings ─────────────────────────────────────── */
+    /* ── Section cards ────────────────────────────────────────── */
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 2rem 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    /* ── Headings ─────────────────────────────────────────────── */
     .main h2 {
       font-size: 1.65rem;
       font-weight: bold;
-      color: #1e1d3f;
-      margin-top: 3.5rem;
+      color: var(--text);
+      margin-top: 0;
       margin-bottom: 0.75rem;
       padding-bottom: 0.4rem;
-      border-bottom: 2px solid #dde0f5;
+      border-bottom: 1.5px solid var(--border);
+      letter-spacing: -0.02em;
     }
-
-    .main h2:first-of-type { margin-top: 0; }
 
     .main h3 {
       font-size: 1.15rem;
       font-weight: bold;
-      color: #2d2b6a;
+      color: var(--text);
       margin-top: 2rem;
       margin-bottom: 0.5rem;
     }
@@ -130,39 +155,30 @@
     .main h4 {
       font-size: 1rem;
       font-weight: bold;
-      color: #3a386a;
+      color: var(--muted);
       margin-top: 1.5rem;
       margin-bottom: 0.3rem;
-      font-family: sans-serif;
     }
 
-    .main p {
-      margin-bottom: 1rem;
-    }
-
-    .main ul, .main ol {
-      margin: 0.5rem 0 1rem 1.5rem;
-    }
-
-    .main li {
-      margin-bottom: 0.35rem;
-    }
+    .main p { margin-bottom: 1rem; }
+    .main ul, .main ol { margin: 0.5rem 0 1rem 1.5rem; }
+    .main li { margin-bottom: 0.35rem; }
 
     /* ── Code ─────────────────────────────────────────────────── */
     code {
       font-family: "Courier New", Courier, monospace;
       font-size: 0.88em;
-      background: #eeeffe;
+      background: rgba(107, 125, 204, 0.10);
       padding: 0.1em 0.35em;
-      border-radius: 3px;
-      color: #2d2b6a;
+      border-radius: 6px;
+      color: var(--text);
     }
 
     pre {
-      background: #171630;
-      color: #cac8f8;
+      background: #111827;
+      color: #e5e7eb;
       padding: 1.25rem 1.5rem;
-      border-radius: 6px;
+      border-radius: 18px;
       overflow-x: auto;
       margin: 1rem 0 1.5rem;
       font-family: "Courier New", Courier, monospace;
@@ -170,25 +186,26 @@
       line-height: 1.55;
     }
 
-    pre code {
-      background: none;
-      padding: 0;
-      color: inherit;
-      font-size: inherit;
-    }
+    pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
 
     /* ── Tables ───────────────────────────────────────────────── */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: var(--panel-strong);
+      margin: 1rem 0 1.5rem;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      margin: 1rem 0 1.5rem;
-      font-family: sans-serif;
       font-size: 0.88rem;
     }
 
     th {
-      background: #1e1d3f;
-      color: #ffffff;
+      background: rgba(107, 125, 204, 0.10);
+      color: var(--text);
       padding: 0.55rem 0.85rem;
       text-align: left;
       font-weight: bold;
@@ -196,67 +213,64 @@
 
     td {
       padding: 0.5rem 0.85rem;
-      border-bottom: 1px solid #dde0f5;
+      border-bottom: 1px solid rgba(107, 125, 204, 0.10);
       vertical-align: top;
     }
 
-    tr:nth-child(even) td { background: #f0f1fb; }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: rgba(107, 125, 204, 0.04); }
 
     /* ── Callout boxes ────────────────────────────────────────── */
     .callout {
-      border-left: 4px solid #7c86d4;
-      background: #eeeffe;
+      border-left: 4px solid var(--accent);
+      background: rgba(107, 125, 204, 0.08);
       padding: 0.85rem 1.2rem;
       margin: 1.25rem 0;
-      border-radius: 0 4px 4px 0;
-      font-family: sans-serif;
+      border-radius: 14px;
       font-size: 0.92rem;
     }
 
     .callout.warning {
       border-left-color: #c27a00;
-      background: #fff8e6;
+      background: rgba(194, 122, 0, 0.07);
     }
 
     .callout.note {
       border-left-color: #2a7a4a;
-      background: #edfaf2;
+      background: rgba(42, 122, 74, 0.07);
     }
 
     .callout strong { display: block; margin-bottom: 0.25rem; }
 
-    /* ── Badge row ────────────────────────────────────────────── */
+    /* ── Badges ───────────────────────────────────────────────── */
     .badges { margin-bottom: 1.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
     .badge {
       display: inline-block;
-      font-family: sans-serif;
       font-size: 0.75rem;
-      padding: 0.2rem 0.6rem;
-      border-radius: 3px;
-      background: #6b7dcc;
+      padding: 0.2rem 0.7rem;
+      border-radius: 999px;
+      background: var(--accent);
       color: #fff;
       font-weight: bold;
     }
-    .badge.green { background: #2a7a4a; }
-    .badge.gray  { background: #6b7280; }
+    .badge.green  { background: #2a7a4a; }
+    .badge.gray   { background: #6b7280; }
     .badge.orange { background: #c27a00; }
 
     /* ── Status chips ─────────────────────────────────────────── */
-    .status-done   { color: #2a7a4a; font-weight: bold; }
-    .status-wip    { color: #c27a00; font-weight: bold; }
-    .status-plan   { color: #888; }
+    .status-done     { color: #2a7a4a; font-weight: bold; }
+    .status-wip      { color: #c27a00; font-weight: bold; }
+    .status-plan     { color: #888; }
+    .status-progress { color: var(--accent); font-weight: bold; }
 
-    /* ── Page anchor offset (sticky header compensation) ─────── */
     h2, h3 { scroll-margin-top: 1.5rem; }
 
-    /* ── Footer ───────────────────────────────────────────────── */
     footer {
-      margin-top: 5rem;
+      margin-top: 2rem;
       padding-top: 1.5rem;
-      border-top: 1px solid #dde0f5;
-      font-family: sans-serif;
+      border-top: 1px solid var(--border);
       font-size: 0.82rem;
-      color: #888;
+      color: var(--muted);
     }
   </style>
 </head>
@@ -311,6 +325,7 @@
     </div>
 
     <!-- ── OVERVIEW ─────────────────────────────────────────── -->
+    <div class="section">
     <h2 id="overview">Overview</h2>
 
     <p>
@@ -334,8 +349,10 @@
       without per-series configuration, hardcoded dictionaries, or fine-tuning.
       All coding logic derives from the published H/VdC rulebook.
     </p>
+    </div>
 
     <!-- ── BACKGROUND ───────────────────────────────────────── -->
+    <div class="section">
     <h2 id="background">Background</h2>
 
     <h3>The Hall/Van de Castle System</h3>
@@ -378,8 +395,10 @@
       without training data. This makes the approach practical for researchers who
       need to code large archives but lack the resources for full manual annotation.
     </p>
+    </div>
 
     <!-- ── INSTALLATION ──────────────────────────────────────── -->
+    <div class="section">
     <h2 id="installation">Installation</h2>
 
     <pre><code>git clone https://github.com/cogcommscience-lab/llm_dream_coder.git
@@ -404,8 +423,10 @@ export ANTHROPIC_API_KEY=your_key_here</code></pre>
       Keys can be created at
       <a href="https://console.anthropic.com/">console.anthropic.com</a>.
     </p>
+    </div>
 
     <!-- ── DATA FORMAT ───────────────────────────────────────── -->
+    <div class="section">
     <h2 id="data-format">Data Format</h2>
 
     <p>
@@ -417,6 +438,7 @@ export ANTHROPIC_API_KEY=your_key_here</code></pre>
 
     <h3>coded_dreams.csv</h3>
     <p>One row per dream. Required columns:</p>
+    <div class="table-wrap">
     <table>
       <tr><th>Column</th><th>Description</th></tr>
       <tr><td><code>dream_id</code></td><td>Unique identifier, e.g. <code>emma_1960-001</code></td></tr>
@@ -425,18 +447,21 @@ export ANTHROPIC_API_KEY=your_key_here</code></pre>
       <tr><td><code>collection_sex</code></td><td>Dreamer sex (M/F)</td></tr>
       <tr><td><code>collection_type</code></td><td><code>series</code> or <code>set</code></td></tr>
     </table>
+    </div>
 
     <h3>dreambank_codings.csv</h3>
     <p>
       One row per individual coding. Required only for evaluation against ground truth.
       Generated by <code>xml_to_csv.py</code>.
     </p>
+    <div class="table-wrap">
     <table>
       <tr><th>Column</th><th>Description</th></tr>
       <tr><td><code>dream_id</code></td><td>Matches <code>coded_dreams.csv</code></td></tr>
       <tr><td><code>coding_type</code></td><td>Category, e.g. <code>char</code>, <code>fri</code>, <code>agg</code></td></tr>
       <tr><td><code>code</code></td><td>The H/VdC code, e.g. <code>1MKA</code></td></tr>
     </table>
+    </div>
 
     <div class="callout note">
       <strong>Using your own data</strong>
@@ -444,8 +469,10 @@ export ANTHROPIC_API_KEY=your_key_here</code></pre>
       codes), the tool will still generate predicted codes and reasoning — it simply
       will not compute F1 or other evaluation metrics.
     </div>
+    </div>
 
     <!-- ── CHARACTERS MODULE ─────────────────────────────────── -->
+    <div class="section">
     <h2 id="characters">Characters Module</h2>
 
     <p>
@@ -501,6 +528,7 @@ Attr age       : 0.938</code></pre>
 
     <p>Each character receives a four-slot code: <strong>NUMBER + GENDER + IDENTITY + AGE</strong></p>
 
+    <div class="table-wrap">
     <table>
       <tr><th>Slot</th><th>Values</th><th>Meaning</th></tr>
       <tr>
@@ -524,12 +552,14 @@ Attr age       : 0.938</code></pre>
         <td>Adult / Teenager / Child / Baby</td>
       </tr>
     </table>
+    </div>
 
     <p>
       Animals use <code>1ANI</code> / <code>2ANI</code>; unidentifiable creatures use <code>1CZZ</code> / <code>2CZZ</code>.
     </p>
 
     <h4>Example codes</h4>
+    <div class="table-wrap">
     <table>
       <tr><th>Code</th><th>Meaning</th></tr>
       <tr><td><code>1MKA</code></td><td>Individual male known adult</td></tr>
@@ -539,6 +569,7 @@ Attr age       : 0.938</code></pre>
       <tr><td><code>5MPA</code></td><td>Imaginary/supernatural individual male prominent (e.g., the devil)</td></tr>
       <tr><td><code>1ANI</code></td><td>Single individual animal</td></tr>
     </table>
+    </div>
 
     <h3 id="char-series">Series Mode</h3>
 
@@ -579,9 +610,7 @@ Attr age       : 0.938</code></pre>
       as a total miss).
     </p>
 
-    <p>
-      The module reports two attribute-level F1 scores:
-    </p>
+    <p>The module reports two attribute-level F1 scores:</p>
 
     <ul>
       <li>
@@ -599,6 +628,7 @@ Attr age       : 0.938</code></pre>
 
     <h4>Benchmark results</h4>
 
+    <div class="table-wrap">
     <table>
       <tr><th>Collection</th><th>Type</th><th>n</th><th>Overall F1</th><th>Non-family F1</th></tr>
       <tr>
@@ -623,9 +653,11 @@ Attr age       : 0.938</code></pre>
         <td>0.706</td>
       </tr>
     </table>
+    </div>
 
     <h4>Per-attribute breakdown (norms-f, held-out)</h4>
 
+    <div class="table-wrap">
     <table>
       <tr><th>Attribute</th><th>F1</th></tr>
       <tr><td>Number</td><td>0.915</td></tr>
@@ -633,6 +665,7 @@ Attr age       : 0.938</code></pre>
       <tr><td>Identity</td><td>0.719</td></tr>
       <tr><td>Age</td><td>0.910</td></tr>
     </table>
+    </div>
 
     <p>
       Identity is the weakest slot — most remaining errors are K/S/U/O/R confusions
@@ -649,8 +682,10 @@ Attr age       : 0.938</code></pre>
       different anonymous individual — are the most appropriate benchmark for a
       generalizable tool.
     </p>
+    </div>
 
     <!-- ── SOCIAL INTERACTIONS ──────────────────────────────────── -->
+    <div class="section">
     <h2 id="social-interactions">Social Interactions Module — In Progress</h2>
 
     <p>
@@ -672,6 +707,7 @@ python social_interactions.py --dream-id b-baseline_0003</code></pre>
 
     <h3>Current benchmark results (attribute-level F1)</h3>
 
+    <div class="table-wrap">
     <table>
       <tr>
         <th>Collection</th><th>Role</th><th>n</th>
@@ -710,6 +746,7 @@ python social_interactions.py --dream-id b-baseline_0003</code></pre>
         <td>—</td>
       </tr>
     </table>
+    </div>
 
     <div class="callout note">
       <strong>Friendly interaction F1 reached 0.787 on held-out norms-f</strong>
@@ -739,8 +776,10 @@ python social_interactions.py --dream-id b-baseline_0003</code></pre>
       intersection. This gives partial credit when, for example, the type
       and sub-type are correct but the character code is mis-coded.
     </p>
+    </div>
 
     <!-- ── ACTIVITIES MODULE ─────────────────────────────────── -->
+    <div class="section">
     <h2 id="activities">Activities Module — In Progress</h2>
 
     <p>
@@ -769,6 +808,7 @@ python activities.py --skip 50 --n 50          # validation partition (dreams 51
 
     <h3>Current benchmark results (attribute-level F1)</h3>
 
+    <div class="table-wrap">
     <table>
       <tr>
         <th>Partition</th><th>Role</th><th>n</th>
@@ -798,6 +838,7 @@ python activities.py --skip 50 --n 50          # validation partition (dreams 51
         <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
       </tr>
     </table>
+    </div>
 
     <div class="callout note">
       <strong>Overall validation F1 (0.72) meets the ≥ 0.70 target.</strong>
@@ -821,8 +862,10 @@ python activities.py --skip 50 --n 50          # validation partition (dreams 51
       character attributes, sub-type, and direction, giving partial credit
       when sub-type or direction is correct but the character code is mis-coded.
     </p>
+    </div>
 
     <!-- ── SUCCESS AND FAILURE ──────────────────────────────────── -->
+    <div class="section">
     <h2 id="success-failure">Success and Failure Module — In Progress</h2>
 
     <p>
@@ -855,6 +898,7 @@ python success_failure.py --skip 50 --n 50          # validation partition (drea
 
     <h3>Current benchmark results (attribute-level F1)</h3>
 
+    <div class="table-wrap">
     <table>
       <tr>
         <th>Partition</th><th>Role</th><th>n</th>
@@ -879,6 +923,7 @@ python success_failure.py --skip 50 --n 50          # validation partition (drea
         <td>—</td><td>—</td><td>—</td>
       </tr>
     </table>
+    </div>
 
     <div class="callout note">
       <strong>Validation Mean F1 (0.887) exceeds the ≥ 0.70 target.</strong>
@@ -902,8 +947,10 @@ python success_failure.py --skip 50 --n 50          # validation partition (drea
       identity, age — giving partial credit when the character type is correct
       but one attribute is mis-coded.
     </p>
+    </div>
 
     <!-- ── MISFORTUNES & GOOD FORTUNES ──────────────────────── -->
+    <div class="section">
     <h2 id="mf-gf">Misfortunes &amp; Good Fortunes Module — In Progress</h2>
 
     <p>
@@ -931,6 +978,7 @@ python misfortunes_good_fortunes.py --collection norms-f --n 50  # first 50 norm
 python misfortunes_good_fortunes.py --dream-id b-baseline_0062   # single dream
 python misfortunes_good_fortunes.py --all                        # full dataset</code></pre>
 
+    <div class="table-wrap">
     <table>
       <tr>
         <th>Partition</th><th>Role</th><th>n dreams</th><th>MF GT dreams</th>
@@ -949,6 +997,7 @@ python misfortunes_good_fortunes.py --all                        # full dataset<
         <td>494</td><td>—</td><td>—</td><td>—</td>
       </tr>
     </table>
+    </div>
 
     <div class="callout note">
       <strong>Validation MF F1 (0.728) exceeds the ≥ 0.70 target.</strong>
@@ -968,10 +1017,13 @@ python misfortunes_good_fortunes.py --all                        # full dataset<
       have this limitation; norms-f is the primary validation benchmark. norms-m
       (n=494) is reserved as the untouched final test set.
     </div>
+    </div>
 
     <!-- ── COMING SOON ────────────────────────────────────────── -->
+    <div class="section">
     <h2 id="coming-soon">Coming Soon</h2>
 
+    <div class="table-wrap">
     <table>
       <tr><th>Module</th><th>Status</th><th>Description</th></tr>
       <tr>
@@ -1000,8 +1052,11 @@ python misfortunes_good_fortunes.py --all                        # full dataset<
         <td>Indoor, outdoor, familiar, unfamiliar, geographic</td>
       </tr>
     </table>
+    </div>
+    </div>
 
     <!-- ── KNOWN LIMITATIONS ──────────────────────────────────── -->
+    <div class="section">
     <h2 id="limitations">Known Limitations</h2>
 
     <h3>Family and relative codes</h3>
@@ -1043,8 +1098,10 @@ python misfortunes_good_fortunes.py --all                        # full dataset<
       brace-matching), but failures are possible. Failed dreams are logged, skipped,
       and appear in the results CSV with <code>None</code> values for all metrics.
     </p>
+    </div>
 
     <!-- ── FAQ ───────────────────────────────────────────────── -->
+    <div class="section">
     <h2 id="faq">FAQ</h2>
 
     <h3>Can I use this with dream data that has no ground-truth codings?</h3>
@@ -1089,8 +1146,10 @@ python misfortunes_good_fortunes.py --all                        # full dataset<
       LLM inference, <code>evaluate()</code> for F1 computation, and a
       <code>main()</code> with argparse flags matching the existing interface.
     </p>
+    </div>
 
     <!-- ── CITATION ──────────────────────────────────────────── -->
+    <div class="section">
     <h2 id="citation">Citation</h2>
 
     <p>If you use this tool in published research, please cite:</p>
@@ -1099,9 +1158,7 @@ python misfortunes_good_fortunes.py --all                        # full dataset<
 coding using large language models. GitHub.
 https://github.com/cogcommscience-lab/llm_dream_coder</code></pre>
 
-    <p>
-      For the Hall/Van de Castle coding system itself, cite:
-    </p>
+    <p>For the Hall/Van de Castle coding system itself, cite:</p>
 
     <pre><code>Hall, C. S., &amp; Van de Castle, R. L. (1966). The content analysis of dreams.
 Appleton-Century-Crofts.</code></pre>
@@ -1113,6 +1170,7 @@ Appleton-Century-Crofts.</code></pre>
         MIT License &nbsp;|&nbsp; Contact: raachaelkee@gmail.com
       </p>
     </footer>
+    </div>
 
   </main>
 </div>
